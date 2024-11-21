@@ -1,0 +1,19 @@
+.swal-title {
+  font-size: 24px; /* Adjust the font size for the title */
+  color: #f95005; /* Custom color */
+}
+
+.swal-text {
+  font-size: 20px; /* Adjust the font size for the content text */
+  text-align: center; /* Center the text */
+}
+
+.swal-button {
+  background-color: #ff5001 !important; /* Custom button color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}

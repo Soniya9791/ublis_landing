@@ -1,0 +1,428 @@
+.containers {
+  block-size: 300vh;
+  position: relative;
+}
+
+.sticky {
+  position: sticky;
+  overflow: hidden;
+  inset-block-start: 0;
+  block-size: 100vh;
+}
+
+.el {
+  inline-size: 100%;
+  block-size: 100%;
+  inset-block-start: 0;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contentBox {
+  block-size: 70vh !important;
+}
+
+.imageContainer {
+  position: relative;
+  inline-size: 25vw;
+  block-size: 25vh;
+  margin-block-start: 150px;
+}
+
+.viewContactBtn {
+  border: 1px solid #f95005;
+  background: #f95005;
+  color: white;
+  padding: 7px 25px;
+  border-radius: 8px;
+}
+
+.imageContainer img {
+  object-fit: contain;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.h-screen {
+  block-size: 70vh !important;
+}
+
+/* Styles for the 2nd image */
+.el:nth-of-type(2) .imageContainer {
+  inset-block-start: -30vh;
+  inset-inline-start: 5vw;
+  inline-size: 45vw;
+  block-size: 40vh;
+}
+
+/* Styles for the 3rd image */
+.el:nth-of-type(3) .imageContainer {
+  inset-block-start: -10vh;
+  inset-inline-start: -25vw;
+  inline-size: 40vw;
+  block-size: 50vh;
+}
+
+/* Styles for the 4th image */
+.el:nth-of-type(4) .imageContainer {
+  inset-inline-start: 20.5vw;
+  inline-size: 40vw;
+  block-size: 35vh;
+}
+
+/* Styles for the 5th image */
+.el:nth-of-type(5) .imageContainer {
+  inset-block-start: 26.5vh;
+  inset-inline-start: 5vw;
+  inline-size: 30vw;
+  block-size: 30vh;
+}
+
+/* Styles for the 6th image */
+.el:nth-of-type(6) .imageContainer {
+  inset-block-start: 27.5vh;
+  inset-inline-start: -22.5vw;
+  inline-size: 40vw;
+  block-size: 30vh;
+}
+
+/* Styles for the 7th image */
+.el:nth-of-type(7) .imageContainer {
+  inset-block-start: 26.5vh;
+  inset-inline-start: 25vw;
+  inline-size: 40vw;
+  block-size: 30vh;
+}
+
+@media only screen and (max-width: 480px) {
+  .imageContainer {
+    position: relative;
+    inline-size: 65vw;
+    block-size: 25vh;
+    margin-block-start: 0;
+  }
+
+  .imageContainer img {
+    object-fit: contain;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  /* Styles for the 2nd image */
+  .el:nth-of-type(2) .imageContainer {
+    inset-block-start: -20vh;
+    inset-inline-start: 5vw;
+    inline-size: 35vw;
+    block-size: 30vh;
+  }
+
+  /* Styles for the 3rd image */
+  .el:nth-of-type(3) .imageContainer {
+    inset-block-start: -13vh;
+    inset-inline-start: -25vw;
+    inline-size: 30vw;
+    block-size: 45vh;
+  }
+
+  /* Styles for the 4th image */
+  .el:nth-of-type(4) .imageContainer {
+    inset-inline-start: 35vw;
+    inset-block-start: -12vh;
+    inline-size: 25vw;
+    block-size: 25vh;
+  }
+
+  /* Styles for the 5th image */
+  .el:nth-of-type(5) .imageContainer {
+    inset-block-start: 18vh;
+    inset-inline-start: 5vw;
+    inline-size: 30vw;
+    block-size: 25vh;
+  }
+
+  /* Styles for the 6th image */
+  .el:nth-of-type(6) .imageContainer {
+    inset-block-start: 25vh;
+    inset-inline-start: -27vw;
+    inline-size: 40vw;
+    block-size: 25vh;
+  }
+
+  /* Styles for the 7th image */
+  .el:nth-of-type(7) .imageContainer {
+    inset-block-start: 24.5vh;
+    inset-inline-start: 35vw;
+    inline-size: 30vw;
+    block-size: 25vh;
+  }
+}
+
+.classDetails .gy-5 .details p {
+  text-align: start;
+}
+
+.service-item {
+  background-color: #ffffff;
+  box-shadow: 0px 5px 90px 0px rgba(0, 0, 0, 0.1);
+  padding: 40px 30px;
+  transition: all ease-in-out 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  border-block-end: 5px solid #ffffff;
+  block-size: 100%;
+}
+
+.service-item .icon {
+  color: #ffffff;
+  background: #f95005;
+  margin: 0;
+  inline-size: 64px;
+  block-size: 64px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-block-end: 20px;
+  font-size: 28px;
+  transition: ease-in-out 0.3s;
+}
+
+.service-item h5 {
+  text-align: center;
+}
+
+.service-item h3 {
+  font-weight: 700;
+  margin: 10px 0 15px 0;
+  font-size: 22px;
+  text-align: center;
+  transition: ease-in-out 0.3s;
+}
+
+.service-item p {
+  line-height: 24px;
+  font-size: 14px;
+  margin-block-end: 0;
+}
+
+@media (min-width: 1365px) {
+  .service-item:hover {
+    transform: translateY(-10px);
+    border-color: #f95005;
+  }
+
+  .service-item:hover h3 {
+    color: #f95005;
+  }
+}
+
+.classDetails .service-item p {
+  text-align: start;
+}
+
+.classDetails {
+  padding: 80px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.classDetails .classContents h3 {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin: 30px 20px 20px 20px;
+}
+
+.classDetails .classContents p {
+  font-size: 22px;
+  text-align: center;
+  margin-block-end: 30px;
+}
+
+.homePageContxt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.homePageContents {
+  text-align: center;
+  font-size: 30px;
+  color: white;
+  font-weight: bold;
+}
+
+.homePageContents h2 {
+  line-height: 50px;
+}
+
+.homePageContxt,
+.categories {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 10px;
+  background-image: url("../../assets/home/bg.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-block-size: 100vh;
+  inline-size: 100%;
+}
+
+@supports (-webkit-overflow-scrolling: touch) {
+  .homePageContxt,
+  .categories {
+    background-attachment: scroll;
+  }
+}
+
+.homePageContxt::before,
+.categories::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+
+.homePageContxt > *,
+.categories > * {
+  position: relative;
+  z-index: 2;
+}
+
+.ourStoryCont h3,
+.whyChooseUs h3,
+.categories h3 {
+  padding-block-start: 30px;
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.ourStory p,
+.whyChooseUs p,
+.categories p {
+  font-size: 18px;
+  text-align: center;
+  padding-block-end: 15px;
+  padding-block-start: 10px;
+}
+
+.categoriesCont h3,
+.categoriesCont p {
+  color: white;
+}
+
+.ourStory,
+.whyChooseUs,
+.categories {
+  display: flex;
+  padding: 30px 40px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.feeStructure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.feeStructure h3 {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  color: #f95005;
+  padding: 50px 0px 20px 0px;
+}
+
+.feeStructure h5 {
+  font-size: 23px;
+  text-align: center;
+  color: black;
+  padding: 10px 0px 40px 0px;
+}
+
+.feeStructure .row {
+  display: flex;
+  justify-content: center;
+}
+
+.contentss {
+  padding: 30px 5px;
+}
+
+.contentss h4 {
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  color: #f95005;
+}
+
+.contentss .image {
+  padding: 40px 10px;
+}
+
+.contentss .image img {
+  block-size: 700px;
+}
+
+.ourClassesWeOffered {
+  padding-block-start: 130px;
+}
+
+.offeredCont .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.offeredCont h3 {
+  font-size: 40px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 20px 10px 40px 10px;
+}
+
+.card-title {
+  font-size: 1.2rem !important;
+}
+
+.whatWeCover,
+.whatWeCover .container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.whatWeCover {
+  flex-direction: column;
+}
+
+.whatWeCover h2 {
+  font-size: 30px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 60px 10px 50px 10px;
+}

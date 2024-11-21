@@ -1,0 +1,218 @@
+.aboutUsTeam .col-md-12 h4 {
+  font-size: 52px;
+  font-weight: 600;
+}
+
+.aboutUsTeam .col-md-12 p span {
+  color: #f95005;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .aboutUsCont {
+    padding: 40px 10px 0px 10px;
+  }
+  .carouselItems .carousel {
+    width: 90vw;
+  }
+  .ourMission {
+    height: 500px;
+  }
+}
+
+.instructorImg {
+  border-radius: 50%;
+  height: 300px;
+  width: 300px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+}
+
+.instructorContents {
+  padding: 30px 10px 10px 10px;
+}
+
+.instructorContents .aboutUsTeam {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.deepika-intro {
+  font-size: 20px;
+}
+
+.deepika-intro p {
+  padding-bottom: 30px;
+}
+
+.instructorName {
+  font-size: 25px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.instructorRole {
+  font-size: 22px;
+  font-weight: 500;
+  padding-bottom: 10px;
+}
+
+.textBorder {
+  -webkit-text-stroke-width: 0.3px;
+  -webkit-text-stroke-color: white;
+}
+
+.yogaHead {
+  font-size: 22px !important;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.team .team-member {
+  background-color: #ffffff;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  border-radius: 5px;
+  transition: 0.5s;
+  padding: 30px;
+  height: 100%;
+}
+
+@media (max-width: 468px) {
+  .team .team-member {
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+}
+
+.team .team-member .pic {
+  overflow: hidden;
+  width: 150px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.team .team-member .pic img {
+  transition: ease-in-out 0.3s;
+}
+
+.team .team-member:hover {
+  transform: translateY(-10px);
+}
+
+.team .team-member .member-info {
+  padding-left: 30px;
+}
+
+@media (max-width: 468px) {
+  .team .team-member .member-info {
+    padding: 30px 0 0 0;
+    text-align: center;
+  }
+}
+
+.team .team-member h4 {
+  font-weight: 700;
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+.team .team-member span {
+  display: block;
+  font-size: 15px;
+  padding-bottom: 10px;
+  position: relative;
+  font-weight: 500;
+}
+
+.team .team-member span::after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 50px;
+  height: 1px;
+  background: color-mix(in srgb, #444444, transparent 85%);
+  bottom: 0;
+  left: 0;
+}
+
+@media (max-width: 468px) {
+  .team .team-member span::after {
+    left: calc(50% - 25px);
+  }
+}
+
+.team .team-member p {
+  margin: 10px 0 0 0;
+  font-size: 14px;
+}
+
+.team .team-member .social {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+}
+
+@media (max-width: 468px) {
+  .team .team-member .social {
+    justify-content: center;
+  }
+}
+
+.team .team-member .social a {
+  background: color-mix(in srgb, #444444, transparent 94%);
+  transition: ease-in-out 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  width: 36px;
+  height: 36px;
+}
+
+.team .team-member .social a i {
+  color: color-mix(in srgb, #444444, transparent 20%);
+  font-size: 16px;
+  margin: 0 2px;
+}
+
+.team .team-member .social a:hover {
+  background: #f95005;
+}
+
+.team .team-member .social a:hover i {
+  color: #ffffff;
+}
+
+.team .team-member .social a + a {
+  margin-left: 8px;
+}
+
+.teamSection .team {
+  flex-direction: column;
+}
+
+.teamSection {
+  display: flex;
+  flex-direction: column;
+  margin-top: -60px;
+  align-items: center;
+  justify-content: center;
+}
+
+.teamSection .team .container {
+  margin-top: 30px;
+}
+
+.teamSection .team .container h2 {
+  font-size: 40px;
+  text-align: center;
+}

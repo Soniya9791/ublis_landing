@@ -1,0 +1,42 @@
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.p-speeddial-action {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.318);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add this for drop shadow */
+}
+
+.p-speeddial-button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.p-speeddial-button {
+  height: 60px;
+  background-color: #f95005;
+  color: white;
+  width: 60px;
+  border-radius: 50%;
+}
+
+.p-speeddial-button .pi {
+  font-weight: bold;
+}
+
+.p-speeddial {
+  position: fixed;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.testimonialsBtn {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}

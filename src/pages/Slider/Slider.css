@@ -1,0 +1,57 @@
+[type="radio"] {
+  display: none;
+}
+
+#slider {
+  height: 35vw;
+  position: relative;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  background: transparent;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+.cardImg {
+  height: 100%;
+  width: 100%;
+  border-radius: 12px;
+}
+
+#slider label {
+  margin: auto;
+  width: 60%;
+  height: 100%;
+  border-radius: 4px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+  transition: transform 0.4s ease;
+}
+
+#s1:checked ~ #slide3,
+#s2:checked ~ #slide1,
+#s3:checked ~ #slide2 {
+  box-shadow: -4px 0 3.2px rgba(242, 241, 241, 0.5),
+    4px 0 3.2px rgba(242, 241, 241, 0.5);
+  transform: translate3d(-30%, 0, -200px);
+  filter: blur(2px);
+}
+
+#s1:checked ~ #slide1,
+#s2:checked ~ #slide2,
+#s3:checked ~ #slide3 {
+  box-shadow: -4px 0 3.2px rgba(242, 241, 241, 0.5),
+    4px 0 3.2px rgba(242, 241, 241, 0.5);
+  transform: translate3d(0, 0, 0);
+}
+
+#s1:checked ~ #slide2,
+#s2:checked ~ #slide3,
+#s3:checked ~ #slide1 {
+  box-shadow: -4px 0 3.2px rgba(242, 241, 241, 0.5),
+    4px 0 3.2px rgba(242, 241, 241, 0.5);
+  transform: translate3d(30%, 0, -200px);
+  filter: blur(2px);
+}

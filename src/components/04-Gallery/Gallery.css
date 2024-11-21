@@ -1,0 +1,382 @@
+.gallerySection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 10px;
+  /* background-image: url("../../assets/contact/bg.png"); */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  /* min-height: 100vh; */
+  width: 100%;
+}
+
+@supports (-webkit-overflow-scrolling: touch) {
+  .gallerySection {
+    background-attachment: scroll;
+  }
+}
+
+.gallerySection h4 {
+  font-size: 30px;
+  text-align: center;
+}
+@media only screen and (max-width: 768px) {
+  .gallerySection {
+    min-height: 200vh;
+  }
+}
+
+.gallerySection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-color: rgba(0, 0, 0, 0.1); */
+  z-index: 1;
+}
+
+.gallerySection > * {
+  position: relative;
+  z-index: 2;
+}
+
+.gallerySection {
+  padding-bottom: 140px;
+  padding-top: 130px;
+}
+
+.gallerySection .gallerySection-filters {
+  padding: 0;
+  margin: 0 auto 20px auto;
+  list-style: none;
+  text-align: center;
+}
+
+.gallerySection .gallerySection-filters li {
+  cursor: pointer;
+  display: inline-block;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 10px;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.gallerySection-filters {
+  justify-content: center !important;
+}
+
+.gallerySection .gallerySection-filters li:hover,
+.gallerySection .gallerySection-filters li.filter-active {
+  color: #f95005;
+  border: 1px solid #f95005;
+  padding: 12px 20px;
+  border-radius: 9px;
+}
+
+.gallerySection .gallerySection-filters li:first-child {
+  margin-left: 0;
+}
+
+.gallerySection .gallerySection-filters li:last-child {
+  margin-right: 0;
+}
+
+@media (max-width: 575px) {
+  .gallerySection .gallerySection-filters li {
+    font-size: 14px;
+    margin: 0 5px;
+    padding: 5px 10px;
+  }
+
+  .gallerySection .gallerySection-filters li:hover,
+  .gallerySection .gallerySection-filters li.filter-active {
+    padding: 5px 10px;
+  }
+}
+
+.gallerySection .gallerySection-item {
+  position: relative;
+}
+
+.gallerySection .gallerySection-item .gallerySection-info {
+  background-color: color-mix(in srgb, #ffffff, transparent 10%);
+  opacity: 0;
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  bottom: 0;
+  z-index: 3;
+  transition: all ease-in-out 0.3s;
+  padding: 15px;
+}
+
+.gallerySection .gallerySection-item .gallerySection-info h4 {
+  font-size: 18px;
+  font-weight: 600;
+  padding-right: 50px;
+}
+
+.gallerySection .gallerySection-item .gallerySection-info p {
+  color: color-mix(in srgb, #666666, transparent 30%);
+  font-size: 14px;
+  margin-bottom: 0;
+  padding-right: 50px;
+}
+
+.gallerySection .gallerySection-item .gallerySection-info .preview-link,
+.gallerySection .gallerySection-item .gallerySection-info .details-link {
+  position: absolute;
+  right: 50px;
+  font-size: 24px;
+  top: calc(50% - 14px);
+  color: color-mix(in srgb, #666666, transparent 30%);
+  transition: 0.3s;
+  line-height: 0;
+}
+
+.gallerySection .gallerySection-item .gallerySection-info .preview-link:hover,
+.gallerySection .gallerySection-item .gallerySection-info .details-link:hover {
+  color: #f95005;
+}
+
+.gallerySection .gallerySection-item .gallerySection-info .details-link {
+  right: 14px;
+  font-size: 28px;
+}
+
+.gallerySection .gallerySection-item:hover .gallerySection-info {
+  opacity: 1;
+  bottom: 20px;
+}
+
+.gallerySection-details .gallerySection-details-slider img {
+  width: 100%;
+}
+
+.gallerySection-details .gallerySection-details-slider video {
+  width: 100%;
+}
+
+.gallerySection-details .swiper-wrapper {
+  height: auto;
+}
+
+.gallerySection-details .swiper-button-prev,
+.gallerySection-details .swiper-button-next {
+  width: 48px;
+  height: 48px;
+}
+
+.gallerySection-details .swiper-button-prev:after,
+.gallerySection-details .swiper-button-next:after {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(0, 0, 0, 0.15);
+  font-size: 24px;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.gallerySection-details .swiper-button-prev:hover:after,
+.gallerySection-details .swiper-button-next:hover:after {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 575px) {
+  .gallerySection-details .swiper-button-prev,
+  .gallerySection-details .swiper-button-next {
+    display: none;
+  }
+}
+
+.gallerySection-details .swiper-pagination {
+  margin-top: 20px;
+  position: relative;
+}
+
+.gallerySection-details .swiper-pagination .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background-color: color-mix(in srgb, #666666, transparent 85%);
+  opacity: 1;
+}
+
+.gallerySection-details .swiper-pagination .swiper-pagination-bullet-active {
+  background-color: #f95005;
+}
+
+.gallerySection-details .gallerySection-info h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.gallerySection-details .gallerySection-info h3:after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: #f95005;
+  left: 0;
+  bottom: 0;
+}
+
+.gallerySection-details .gallerySection-info ul {
+  list-style: none;
+  padding: 0;
+  font-size: 15px;
+}
+
+.gallerySection-details .gallerySection-info ul li {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 15px;
+}
+
+.gallerySection-details .gallerySection-info ul strong {
+  text-transform: uppercase;
+  font-weight: 400;
+  color: color-mix(in srgb, #666666, transparent 50%);
+  font-size: 14px;
+}
+
+.gallerySection-details .gallerySection-info .btn-visit {
+  padding: 8px 40px;
+  background: #f95005;
+  color: #f95005;
+  border-radius: 50px;
+  transition: 0.3s;
+}
+
+.gallerySection-details .gallerySection-info .btn-visit:hover {
+  background: color-mix(in srgb, #f95005, transparent 20%);
+}
+
+.gallerySection-details .gallerySection-description h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.gallerySection-details .gallerySection-description p {
+  padding: 0;
+}
+
+.gallerySection-details .gallerySection-description .testimonial-item {
+  padding: 30px 30px 0 30px;
+  position: relative;
+  background: color-mix(in srgb, #666666, transparent 97%);
+  margin-bottom: 50px;
+}
+
+.gallerySection-details
+  .gallerySection-description
+  .testimonial-item
+  .testimonial-img {
+  width: 90px;
+  border-radius: 50px;
+  border: 6px solid #f95005;
+  float: left;
+  margin: 0 10px 0 0;
+}
+
+.gallerySection-details .gallerySection-description .testimonial-item h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 15px 0 5px 0;
+  padding-top: 20px;
+}
+
+.gallerySection-details .gallerySection-description .testimonial-item h4 {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 0;
+}
+
+.gallerySection-details
+  .gallerySection-description
+  .testimonial-item
+  .quote-icon-left,
+.gallerySection-details
+  .gallerySection-description
+  .testimonial-item
+  .quote-icon-right {
+  color: color-mix(in srgb, #f95005, transparent 50%);
+  font-size: 26px;
+  line-height: 0;
+}
+
+.gallerySection-details
+  .gallerySection-description
+  .testimonial-item
+  .quote-icon-left {
+  display: inline-block;
+  left: -5px;
+  position: relative;
+}
+
+.gallerySection-details
+  .gallerySection-description
+  .testimonial-item
+  .quote-icon-right {
+  display: inline-block;
+  right: -5px;
+  position: relative;
+  top: 10px;
+  transform: scale(-1, -1);
+}
+
+.gallerySection-details .gallerySection-description .testimonial-item p {
+  font-style: italic;
+  margin: 0 0 15px 0 0 0;
+  padding: 0;
+}
+
+.gallerySection .galleryIsotopeContainer {
+  padding: 50px 10px 120px 10px;
+}
+
+.gallerySection .container p {
+  font-size: 20px;
+  text-align: center;
+}
+
+.gallerySection .container h2 {
+  font-size: 50px;
+  color: #f95005;
+  padding: 20px 0px;
+  font-weight: bolder;
+  text-align: center;
+}
+
+.gallerySection .container {
+  padding: 50px;
+}
+
+.gallerySection-filters {
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.introSec {
+  padding: 20px !important;
+}

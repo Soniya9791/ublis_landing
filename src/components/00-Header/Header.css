@@ -1,0 +1,53 @@
+.navbarBgImg {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 10px;
+  background-image: url("../../assets/eventTwo/imgae7.jpeg");
+  background-color: #ff5001;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  width: 100%;
+}
+
+@supports (-webkit-overflow-scrolling: touch) {
+  .navbarBgImg {
+    background-attachment: scroll;
+  }
+}
+
+.navbarBgImg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+
+.navbarBgImg > * {
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.navbarLinks p {
+  text-transform: uppercase;
+}
+
+.navbarLinks p:hover {
+  color: #ff5001;
+  transition: 0.4s ease;
+}
