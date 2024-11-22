@@ -9,8 +9,7 @@ const RegistrationPopup = ({ handlecloseregister, openregistration }) => {
         </div>
         <div className="flex">
           <p className=" text-center">
-            We invite you to join our yoga classes! Please register for an
-            account to start your journey to wellness today.
+          Join our yoga classes and embark on your wellness journey ! Register now to get started.
           </p>
         </div>
         <div className="mt-3 flex justify-around">

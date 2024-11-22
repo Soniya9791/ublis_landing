@@ -708,6 +708,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                         { value: "married", label: "Married" },
                       ]}
                       required
+                      disabled={inputs.age > 18 ? false : true}
                       value={inputs.maritalstatus}
                       onChange={(e) => handleInput(e)}
                     />
@@ -754,6 +755,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       placeholder="your name"
                       label="Qualification"
                       // required
+                      disabled={inputs.age > 18 ? false : true}
                       value={inputs.qualification}
                       onChange={(e) => handleInput(e)}
                     />
@@ -766,6 +768,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       placeholder="your name"
                       label="Occupation"
                       // required
+                      disabled={inputs.age > 18 ? false : true}
                       value={inputs.occupation}
                       onChange={(e) => handleInput(e)}
                     />
@@ -1422,7 +1425,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                     type="text"
                     name="medicaldetails"
                     placeholder="your name"
-                    label="Medication Details"
+                    label="Current Medicines"
                     value={inputs.medicaldetails}
                     onChange={(e) => handleInput(e)}
                   />
@@ -1638,25 +1641,77 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                 </div>
 
                 <div className="w-[90%] mb-[20px]">
-                  <div className="text-[#45474b] text-[16px] font-semibold text-justify">
-                    Disclaimer (Please Read Carefully) I have given all
-                    information relevant for yoga class. I Understand that the
-                    information given is strictly confidential.lf at any time
-                    during the session, you feel discomfort or strain, gently
-                    come out of the posture.You may rest at any time during the
-                    class.lt is Important in Yoga that you listen to your body
-                    and respect its limits on any given day.All purchases of
-                    services (classes, workshops, events, therapy) are
-                    non-refundable. Fees cannot be transferred or carry forward
-                    in any manner. I should consult 'My Doctor' prior to
-                    beginning any program, including Yoga for my overall
-                    wellbeing. I recognize that it is my responsibility to
-                    notify my 'Instructor' of any serious illness or injury
-                    before the Yoga Session. I will not perform any postures to
-                    the extent of strain or pain I accept that neither the
-                    'Instructor', nor the 'Hosting Facility' is Liable for any
-                    Injury, or Damages, to person or property, resulting from
-                    participating in these sessions.
+                  <label className="w-[100%] text-[#f95005] font-bold text-[1rem] lg:text-[20px] text-start">
+                    Disclaimer (Please Read Carefully)
+                  </label>
+                  <label className="w-[100%] text-[#f95005]  text-[1rem] lg:text-[20px] text-start">
+                    Personal Responsibility
+                  </label>
+                  <div className="text-[#45474b] text-[16px] font-semibold text-justify pl-[30px] ">
+                    <ul>
+                      <li style={{ listStyle: "disc" }}>
+                        I have provided all necessary and relevant information
+                        required for the yoga class.
+                      </li>
+                      <li style={{ listStyle: "disc" }}>
+                        I understand the importance of listening to my body and
+                        respecting its limits during every session.
+                      </li>
+                      <li style={{ listStyle: "disc" }}>
+                        If I feel any discomfort or strain during a session, I
+                        will gently exit the posture and take rest as needed.
+                      </li>
+                      <li style={{ listStyle: "disc" }}>
+                        I accept that neither the instructor nor the hosting
+                        facility is liable for any injury or damages, to person
+                        or property, resulting from participation in these
+                        sessions.
+                      </li>
+                    </ul>
+                  </div>
+                  <label className="w-[100%] text-[#f95005]  text-[1rem] lg:text-[20px] text-start">
+                    Medical Advisory
+                  </label>
+                  <div className="text-[#45474b] text-[16px] font-semibold text-justify pl-[30px] ">
+                    <ul>
+                      <li style={{ listStyle: "disc" }}>
+                        I will consult my doctor before beginning any yoga
+                        program for my overall well-being.
+                      </li>
+                      <li style={{ listStyle: "disc" }}>
+                        I understand it is my responsibility to inform the
+                        instructor of any serious illness or injury before the
+                        session.
+                      </li>
+                      <li style={{ listStyle: "disc" }}>
+                        I will avoid performing any posture that causes strain
+                        or pain.
+                      </li>
+                    </ul>
+                  </div>
+                  <label className="w-[100%] text-[#f95005]  text-[1rem] lg:text-[20px] text-start">
+                    Confidentiality
+                  </label>
+                  <div className="text-[#45474b] text-[16px] font-semibold text-justify pl-[30px] ">
+                    <ul>
+                      <li style={{ listStyle: "disc" }}>
+                        I acknowledge that the information I provide for the
+                        yoga sessions will be kept strictly confidential.
+                      </li>
+                    </ul>
+                  </div>
+                  <label className="w-[100%] text-[#f95005]  text-[1rem] lg:text-[20px] text-start">
+                  Non-Refundable Policy
+                  </label>
+                  <div className="text-[#45474b] text-[16px] font-semibold text-justify pl-[30px] ">
+                    <ul>
+                      <li style={{ listStyle: "disc" }}>
+                      All purchases of services, including classes, workshops, events, and therapy sessions, are non-refundable.
+                      </li>
+                      <li style={{ listStyle: "disc" }}>
+                      Fees cannot be transferred or carried forward under any circumstances.
+                      </li>
+                    </ul>
                   </div>
                 </div>
 
@@ -1664,7 +1719,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                   <CheckboxInput
                     checked={agreementchecked}
                     id="agreementchecked"
-                    label="Agree Terms & Conditions *"
+                    label="By participating, I agree to adhere to these terms *"
                     required
                     onChange={() => {
                       agreementchecked

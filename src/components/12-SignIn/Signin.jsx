@@ -179,6 +179,12 @@ export default function SignIn() {
         align="center"
       >
         <div className="w-[80%] lg:w-[70%]">
+        <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handlesubmit();
+            }}
+          >
           <img src={logo} className="mt-2 w-[120px]" alt="logo" />
           <div className="w-[100%] mt-4" align="start">
             <TextInput
@@ -259,6 +265,7 @@ export default function SignIn() {
               <i className="fa-solid fa-arrow-right-to-bracket"></i>
             </h1>
           </div>
+          </form>
         </div>
       </div>
     </div>
