@@ -23,8 +23,8 @@ export default function Contact() {
 
     const { firstName, lastName, email, mobile, message } = formData;
 
-    const whatsappNumber = "919940063000";
-    const whatsappMessage = encodeURIComponent(`
+    const whatsAppNumber = "919940063000";
+    const whatsAppMessage = encodeURIComponent(`
     Hi, I am ${firstName} ${lastName}.
 
     ${message}
@@ -35,8 +35,8 @@ export default function Contact() {
     Email: ${email}
   `);
 
-    const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
-    window.open(whatsappLink, "_blank");
+    const whatsAppLink = `https://wa.me/${whatsAppNumber}?text=${whatsAppMessage}`;
+    window.open(whatsAppLink, "_blank");
   };
 
   return (
@@ -121,7 +121,7 @@ export default function Contact() {
                 onSubmit={handleSubmit}
               >
                 <div className="row gy-4">
-                  <h4>Reach Us on Whatsapp</h4>
+                  <h4>Reach Us on WhatsApp</h4>
                   <p>We'll Reach You Shortly!</p>
                   <div className="col-md-6">
                     <input

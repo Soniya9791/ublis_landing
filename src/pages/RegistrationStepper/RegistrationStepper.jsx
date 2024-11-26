@@ -624,7 +624,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       type="number"
                       name="whatsappno"
                       placeholder="your name"
-                      label={`Whatsapp Number ${
+                      label={`WhatsApp Number ${
                         inputs.mode === "3" ? "*" : ""
                       }`}
                       required={inputs.mode === "3" ? true : false}
@@ -812,7 +812,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       <TextInput
                         id="tempaddress"
                         name="peraddress"
-                        label="Residental Address *"
+                        label="Residential  Address *"
                         placeholder="Write your message"
                         rows={3}
                         required
@@ -954,7 +954,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       <TextInput
                         id="tempaddress"
                         name="tempaddess"
-                        label="Residental Address *"
+                        label="Residential  Address *"
                         placeholder="Write your message"
                         rows={3}
                         required
@@ -1394,9 +1394,9 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
               </div>
               <hr />
               <div className="w-full h-[73vh] overflow-auto">
-                <div className="w-[90%] flex flex-wrap my-4  items-center justify-start gap-x-1 lg:gap-x-4 gap-y-5">
+                <div className="w-[90%] flex flex-wrap my-4  items-center justify-start gap-x-1 lg:gap-x-20 gap-y-5">
                   {conditions.map((condition, index) => (
-                    <div className="w-[140px]" key={index}>
+                    <div className="w-[160px]" key={index}>
                       <CheckboxInput
                         id={`condition-${index}`}
                         checked={condition.checked === 1}
@@ -1433,7 +1433,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
 
                 <div className="w-[90%]" align="start">
                   <div>
-                    <TextLabel label={"Under Physicians Care *"} />
+                    <TextLabel label={"Under Physician's Care *"} />
                   </div>
                   <div className="flex w-[90%] gap-x-10 mt-2 mb-[20px]">
                     <RadioButton
@@ -1583,7 +1583,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
               <div className="w-full h-[7vh] flex justify-center items-center">
                 <div className="w-[90%] justify-between flex h-[7vh] items-center">
                   <h1 className="text-[20px] justify-center font-semibold text-[#ff5001]">
-                    Therapy
+                  Health Problems History
                   </h1>
                   <div
                     onClick={() => {
