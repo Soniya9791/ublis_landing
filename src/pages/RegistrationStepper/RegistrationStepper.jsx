@@ -44,6 +44,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     height: 0,
     weight: 0,
     bloodgroup: "",
+    classtype:"",
     bmi: 0,
     bp: "",
     injuries: "",
@@ -437,6 +438,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
           refHeight: inputs.height,
           refWeight: inputs.weight,
           refBlood: inputs.bloodgroup,
+          refClass: inputs.classtype,
           refBMI: inputs.bmi,
           refBP: inputs.bp,
           refRecentInjuries: selectedOption.accident === "yes" ? true : false,
@@ -1302,7 +1304,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       onChange={(e) => handleInput(e)}
                     />
                   </div>
-                  <div className="w-[68%]">
+                  <div className="w-[30%]">
                     <SelectInput
                       id="memberlist"
                       name="memberlist"
@@ -1314,6 +1316,20 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       disabled={inputs.branch ? false : true}
                     />
                   </div>
+                  <div className="w-[30%]">
+                    <SelectInput
+                      id="sessiontype"
+                      name="sessiontype"
+                      label="Session Type *"
+                      disabled={inputs.memberlist ? false : true}
+                      options={sessionTypeOption}
+                      required
+                      value={inputs.sessiontype}
+                      onChange={(e) => handleInput(e)}
+                    />
+                  </div>
+
+
                 </div>
 
                 <div className="w-[90%] flex justify-between mb-[20px]">
@@ -1334,15 +1350,20 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                   </div>
                   <div className="w-[30%]">
                     <SelectInput
-                      id="sessiontype"
-                      name="sessiontype"
-                      label="Session Type *"
-                      disabled={inputs.memberlist ? false : true}
-                      options={sessionTypeOption}
+                      id="classtype"
+                      name="classtype"
+                      label="Class Type *"
+                      options={[
+                        { value: "Online", label: "Online" },
+                        { value: "Offline", label: "Offline" },
+                       
+                      ]}
                       required
-                      value={inputs.sessiontype}
+                      value={inputs.classtype}
                       onChange={(e) => handleInput(e)}
                     />
+                 
+                  
                   </div>
                 </div>
               </div>
