@@ -433,12 +433,13 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
             ? inputs.anniversarydate
             : null,
           ref_su_communicationPreference: parseInt(inputs.mode),
+          ref_Class_Mode: parseInt(inputs.classtype),
+
         },
         generalhealth: {
           refHeight: inputs.height,
           refWeight: inputs.weight,
           refBlood: inputs.bloodgroup,
-          refClass: inputs.classtype,
           refBMI: inputs.bmi,
           refBP: inputs.bp,
           refRecentInjuries: selectedOption.accident === "yes" ? true : false,
@@ -1354,8 +1355,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       name="classtype"
                       label="Class Type *"
                       options={[
-                        { value: "Online", label: "Online" },
-                        { value: "Offline", label: "Offline" },
+                        { value: "1", label: "Online" },
+                        { value: "2", label: "Offline" },
                        
                       ]}
                       required
@@ -1415,7 +1416,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
               </div>
               <hr />
               <div className="w-full h-[73vh] overflow-auto">
-                <div className="w-[90%] flex flex-wrap my-4  items-center justify-start gap-x-1 lg:gap-x-20 gap-y-5">
+                <div className="w-[90%] flex flex-wrap my-4  items-center justify-start gap-x- lg:gap-x-10 gap-y-4">
                   {conditions.map((condition, index) => (
                     <div className="w-[160px]" key={index}>
                       <CheckboxInput

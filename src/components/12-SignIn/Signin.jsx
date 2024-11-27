@@ -85,6 +85,7 @@ export default function SignIn() {
           res.data[0],
           import.meta.env.VITE_ENCRYPTION_KEY
         );
+        console.log("data", data);
 
         console.log(data);
 
@@ -179,92 +180,92 @@ export default function SignIn() {
         align="center"
       >
         <div className="w-[80%] lg:w-[70%]">
-        <form
+          <form
             onSubmit={(e) => {
               e.preventDefault();
               handlesubmit();
-            }}
-          >
-          <img src={logo} className="mt-2 w-[120px]" alt="logo" />
-          <div className="w-[100%] mt-4" align="start">
-            <TextInput
-              id="userid"
-              name="username"
-              label="Username or Email"
-              placeholder="Enter your username"
-              value={inputs.username}
-              onChange={(e) => {
-                handleinput(e);
-              }}
-            />
-          </div>
-          <div className="w-[100%] my-4" align="start">
-            <PasswordInput
-              id="passwordField"
-              name="password"
-              label="Password"
-              value={inputs.password}
-              onChange={(e) => {
-                handleinput(e);
-              }}
-              helperText="Password should be at least 8 characters."
-              maxLength={30}
-            />
-          </div>
-          <div
-            className="-mt-3 cursor-pointer font-bold text-[17px] text-[#ff5001]"
-            align="end"
-            onClick={() => {
-              navigate("/forgetpassword");
             }}
           >
-            Forgot Password?
-          </div>
-          <div className="mt-2">
-            {errorstatus.errorstatus ? (
-              <ErrorMessage message={errorstatus.errormessage} />
-            ) : null}
-          </div>
-          <div className="w-[100%] mt-3">
-            {loading ? (
-              <>
-                <svg className="loadersvg my-4" viewBox="25 25 50 50">
-                  <circle
-                    className="loadercircle"
-                    r="20"
-                    cy="50"
-                    cx="50"
-                  ></circle>
-                </svg>
-              </>
-            ) : (
-              <NormalButton
-                onClick={() => {
-                  handlesubmit();
+            <img src={logo} className="mt-2 w-[120px]" alt="logo" />
+            <div className="w-[100%] mt-4" align="start">
+              <TextInput
+                id="userid"
+                name="username"
+                label="Username or Email"
+                placeholder="Enter your username"
+                value={inputs.username}
+                onChange={(e) => {
+                  handleinput(e);
                 }}
-                label="Sign In"
               />
-            )}
-          </div>
-          <div className="mt-4">
-            <h1
-              className="text-[#000] cursor-pointer text-[18px] font-semibold"
+            </div>
+            <div className="w-[100%] my-4" align="start">
+              <PasswordInput
+                id="passwordField"
+                name="password"
+                label="Password"
+                value={inputs.password}
+                onChange={(e) => {
+                  handleinput(e);
+                }}
+                helperText="Password should be at least 8 characters."
+                maxLength={30}
+              />
+            </div>
+            <div
+              className="-mt-3 cursor-pointer font-bold text-[17px] text-[#ff5001]"
+              align="end"
               onClick={() => {
-                navigate("/signup");
+                navigate("/forgetpassword");
               }}
             >
-              Don't have an Account? Sign Up
-            </h1>
-            <h1
-              className="text-[#ff5001] cursor-pointer mt-3 mb-3 text-[20px] font-semibold"
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              Back to Site{" "}
-              <i className="fa-solid fa-arrow-right-to-bracket"></i>
-            </h1>
-          </div>
+              Forgot Password?
+            </div>
+            <div className="mt-2">
+              {errorstatus.errorstatus ? (
+                <ErrorMessage message={errorstatus.errormessage} />
+              ) : null}
+            </div>
+            <div className="w-[100%] mt-3">
+              {loading ? (
+                <>
+                  <svg className="loadersvg my-4" viewBox="25 25 50 50">
+                    <circle
+                      className="loadercircle"
+                      r="20"
+                      cy="50"
+                      cx="50"
+                    ></circle>
+                  </svg>
+                </>
+              ) : (
+                <NormalButton
+                  onClick={() => {
+                    handlesubmit();
+                  }}
+                  label="Sign In"
+                />
+              )}
+            </div>
+            <div className="mt-4">
+              <h1
+                className="text-[#000] cursor-pointer text-[18px] font-semibold"
+                onClick={() => {
+                  navigate("/signup");
+                }}
+              >
+                Don't have an Account? Sign Up
+              </h1>
+              <h1
+                className="text-[#ff5001] cursor-pointer mt-3 mb-3 text-[20px] font-semibold"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Back to Site{" "}
+                <i className="fa-solid fa-arrow-right-to-bracket"></i>
+              </h1>
+            </div>
           </form>
         </div>
       </div>
