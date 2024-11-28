@@ -17,3 +17,16 @@
   font-size: 16px;
   cursor: pointer;
 }
+
+
+
+.p-calendar:not(.p-calendar-disabled).p-focus > .p-inputtext {
+  /* box-shadow: 0 0 0 0.2rem #c7d2fe00; */
+  box-shadow: none;
+}
+
+
+.dateInput:focus{
+  background-color: #f95005;
+}
+

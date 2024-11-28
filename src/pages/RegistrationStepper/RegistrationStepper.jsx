@@ -12,9 +12,31 @@ import CryptoJS from "crypto-js";
 import { useNavigate } from "react-router-dom";
 import "./RegistrationStepper.css";
 
+import { Calendar } from "primereact/calendar";
+
 const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  let today = new Date();
+  let month = today.getMonth();
+  let year = today.getFullYear();
+  let prevMonth = month === 0 ? 11 : month - 1;
+  let prevYear = prevMonth === 11 ? year - 1 : year;
+  let nextMonth = month === 11 ? 0 : month + 1;
+  let nextYear = nextMonth === 0 ? year + 1 : year;
+
+  const [date, setDate] = useState(null);
+
+  let minDate = new Date();
+
+  minDate.setMonth(prevMonth);
+  minDate.setFullYear(prevYear);
+
+  let maxDate = new Date();
+
+  maxDate.setMonth(nextMonth);
+  maxDate.setFullYear(nextYear);
 
   const [inputs, setInputs] = useState({
     userid: "",
@@ -23,11 +45,12 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     lname: "",
     phoneno: "",
     whatsappno: "",
-    mode: "3",
+    emgContaxt: "",
     dob: "",
     age: "",
     gender: "",
     maritalstatus: "",
+    kidsCount: 0,
     anniversarydate: "",
     caretakername: "",
     qualification: "",
@@ -44,7 +67,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     height: 0,
     weight: 0,
     bloodgroup: "",
-    classtype:"",
+    classtype: "",
     bmi: 0,
     bp: "",
     injuries: "",
@@ -191,6 +214,9 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
           res.data[0],
           import.meta.env.VITE_ENCRYPTION_KEY
         );
+        if (data.token == false) {
+          navigate("/expired");
+        }
 
         console.log("-------------->", data);
 
@@ -302,7 +328,9 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
             res.data[0],
             import.meta.env.VITE_ENCRYPTION_KEY
           );
-          console.log("Branch -----------", data.data);
+          if (data.token == false) {
+            navigate("/expired");
+          }
           setMemberList(data.data); // Make sure this updates memberList
           setpreferTiming([]);
           setSessionType([]);
@@ -335,6 +363,9 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
             res.data[0],
             import.meta.env.VITE_ENCRYPTION_KEY
           );
+          if (data.token == false) {
+            navigate("/expired");
+          }
           console.log("Member List -----------", data);
           setpreferTiming(data.SectionTime);
           setSessionType(data.CustTime);
@@ -367,6 +398,14 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
         ...updatedInputs,
         bmi: bmi,
       };
+    }
+    if (name === "kidsCount") {
+      if (value === 1) {
+        updatedInputs = {
+          ...updatedInputs,
+          kidsCount: "",
+        };
+      }
     }
 
     setInputs(updatedInputs);
@@ -416,6 +455,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
           ref_su_lname: inputs.lname,
           ref_su_mailid: inputs.email,
           ref_su_phoneno: inputs.phoneno,
+          ref_su_emgContaxt: inputs.emgContaxt,
           ref_su_Whatsapp: inputs.whatsappno,
           ref_su_dob: inputs.dob,
           ref_su_age: inputs.age,
@@ -429,12 +469,14 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
           ref_su_prTimeId: parseInt(inputs.preferabletiming),
           ref_su_seModeId: parseInt(inputs.sessiontype),
           ref_su_MaritalStatus: inputs.maritalstatus,
+          ref_su_kidsCount: inputs.kidsCount,
           ref_su_WeddingDate: inputs.anniversarydate
             ? inputs.anniversarydate
             : null,
+          ref_su_deliveryType: inputs.deliveryType ? inputs.deliveryType : null,
+
           ref_su_communicationPreference: parseInt(inputs.mode),
           ref_Class_Mode: parseInt(inputs.classtype),
-
         },
         generalhealth: {
           refHeight: inputs.height,
@@ -592,24 +634,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                   className="w-[90%] mb-[20px] flex justify-between"
                   align="start"
                 >
-                  <div className="w-[100%]">
-                    <SelectInput
-                      id="modeofcontact"
-                      name="mode"
-                      label="Mode of Contact *"
-                      value={inputs.mode}
-                      onChange={(e) => handleInput(e)}
-                      options={modeofcontact || []}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div
-                  className="w-[90%] mb-[20px] flex flex-wrap gap-y-5 justify-between"
-                  align="start"
-                >
-                  <div className="w-[100%] lg:w-[40%]">
+                  <div className=" w-[48%]">
                     <TextInput
                       id="phonenumber"
                       type="number"
@@ -621,16 +646,31 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       onChange={(e) => handleInput(e)}
                     />
                   </div>
-                  <div className="w-[75%] lg:w-[40%]">
+                  <div className="w-[48%]">
+                    <TextInput
+                      id="emergencyno"
+                      type="number"
+                      name="emgContaxt "
+                      label="Emergency Contact number"
+                      value={inputs.emgContaxt}
+                      onChange={(e) => handleInput(e)}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div
+                  className="w-[90%] mb-[20px] flex flex-wrap  justify-between"
+                  align="start"
+                >
+                  <div className="w-[75%] lg:w-[75%]">
                     <TextInput
                       id="whatsappno"
                       type="number"
                       name="whatsappno"
                       placeholder="your name"
-                      label={`WhatsApp Number ${
-                        inputs.mode === "3" ? "*" : ""
-                      }`}
-                      required={inputs.mode === "3" ? true : false}
+                      label={`WhatsApp Number * `}
+                      required
                       value={inputs.whatsappno}
                       onChange={(e) => handleInput(e)}
                     />
@@ -642,7 +682,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                         whatsappno: inputs.phoneno,
                       });
                     }}
-                    className="w-[20%] lg:w-[10%] border-2 border-[#ff621b] bg-[#ff621b] text-[#fff] hover:bg-[#fff] hover:text-[#ff621b] transition-all duration-300 cursor-pointer font-bold rounded text-center text-[11px] flex justify-center items-center"
+                    className="w-[30%] lg:w-[20%] border-2 border-[#ff621b] bg-[#ff621b] text-[#fff] hover:bg-[#fff] hover:text-[#ff621b] transition-all duration-300 cursor-pointer font-bold rounded text-center text-[15px] flex justify-center items-center"
                   >
                     Use Same Number
                   </div>
@@ -652,8 +692,23 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                   className="w-[90%] mb-[20px] flex justify-between"
                   align="start"
                 >
-                  <div className="w-[68%]">
-                    <TextInput
+                  {/* <div className="w-[68%]"> */}
+
+                  <div className="flex flex-col w-[70%] -mt-[13px]">
+                    <label className="bg-[#fff] text-[#ff621b] -mb-[15px] z-50 w-[120px] ml-[10px]">
+                      &nbsp;Date of Birth *
+                    </label>
+
+                    <Calendar
+                      label="Date of Birth *"
+                      className="relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput"
+                      value={inputs.dob}
+                      onChange={(e) => handleInput(e)}
+                      name="dob"
+                    />
+                  </div>
+
+                  {/* <TextInput
                       id="dob"
                       type="date"
                       name="dob"
@@ -662,8 +717,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       required
                       value={inputs.dob}
                       onChange={(e) => handleInput(e)}
-                    />
-                  </div>
+                    /> */}
+                  {/* </div> */}
                   <div className="w-[28%]">
                     <TextInput
                       id="age"
@@ -690,6 +745,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                     options={[
                       { value: "male", label: "Male" },
                       { value: "female", label: "Female" },
+                      { value: "notperfer", label: "Not Perfer to say" },
                     ]}
                     required
                     value={inputs.gender}
@@ -711,14 +767,14 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                         { value: "married", label: "Married" },
                       ]}
                       required
-                      disabled={inputs.age > 18 ? false : true}
+                      disabled={inputs.age > 18 ? false : true}
                       value={inputs.maritalstatus}
                       onChange={(e) => handleInput(e)}
                     />
                   </div>
-                  <div className="w-[48%]">
+                  {/* <div className="w-[48%]">
                     <TextInput
-                      id="anniversarydate"
+                      id=""
                       type="date"
                       name="anniversarydate"
                       placeholder="your name"
@@ -728,6 +784,56 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                         inputs.maritalstatus === "married" ? false : true
                       }
                       value={inputs.anniversarydate}
+                      onChange={(e) => handleInput(e)}
+                    />
+                  </div> */}
+
+                  <div className="flex flex-col w-[48%] -mt-[13px]">
+                    <label className="bg-[#fff] text-[#ff621b] -mb-[15px] z-50 w-[150px] ml-[10px]">
+                      &nbsp; Anniversary Date *
+                    </label>
+
+                    <Calendar
+                      label="Date of Birth *"
+                      className="relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput"
+                      value={inputs.anniversarydate}
+                      onChange={(e) => handleInput(e)}
+                      readOnlyInput
+                    />
+                  </div>
+                </div>
+
+                <div
+                  className="w-[90%] mb-[20px] flex justify-between"
+                  align="start"
+                >
+                  <div className="w-[48%]">
+                    <TextInput
+                      id="kidsCount"
+                      name="kidsCount"
+                      label="No of Kid's *"
+                      type="number"
+                      required
+                      disabled={
+                        inputs.maritalstatus === "married" ? false : true
+                      }
+                      value={inputs.kidsCount}
+                      onChange={(e) => handleInput(e)}
+                    />
+                  </div>
+                  <div className="w-[48%]">
+                    <SelectInput
+                      id="deliveryType"
+                      name="deliveryType"
+                      placeholder="22"
+                      label="Delivery Type *"
+                      options={[
+                        { value: "Normal", label: "Normal" },
+                        { value: "C-Section", label: "C-Section" },
+                      ]}
+                      required
+                      disabled={inputs.kidsCount > 0 ? false : true}
+                      value={inputs.deliveryType}
                       onChange={(e) => handleInput(e)}
                     />
                   </div>
@@ -758,7 +864,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       placeholder="your name"
                       label="Qualification"
                       // required
-                      disabled={inputs.age > 18 ? false : true}
+                      disabled={inputs.age > 18 ? false : true}
                       value={inputs.qualification}
                       onChange={(e) => handleInput(e)}
                     />
@@ -771,7 +877,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       placeholder="your name"
                       label="Occupation"
                       // required
-                      disabled={inputs.age > 18 ? false : true}
+                      disabled={inputs.age > 18 ? false : true}
                       value={inputs.occupation}
                       onChange={(e) => handleInput(e)}
                     />
@@ -1329,8 +1435,6 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       onChange={(e) => handleInput(e)}
                     />
                   </div>
-
-
                 </div>
 
                 <div className="w-[90%] flex justify-between mb-[20px]">
@@ -1357,14 +1461,11 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       options={[
                         { value: "1", label: "Online" },
                         { value: "2", label: "Offline" },
-                       
                       ]}
                       required
                       value={inputs.classtype}
                       onChange={(e) => handleInput(e)}
                     />
-                 
-                  
                   </div>
                 </div>
               </div>
@@ -1551,7 +1652,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       required
                     />
                   </div>
-                  <div className="mb-[20px]">
+                  <div className="flex flex-row w-[100%] justify-between">
+                  <div className="mb-[20px] w-[48%]">
                     <SelectInput
                       id="pain"
                       name="painscale"
@@ -1569,6 +1671,22 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       onChange={(e) => handleInput(e)}
                     />
                   </div>
+                  <div className="mb-[20px] w-[48%]">
+                  <TextInput
+                      id="pain"
+                      name="painscale"
+                      label="Additional Points(Back Pain)"
+                     
+                      disabled={
+                        selectedOption.backpain === "yes" ? false : true
+                      }
+                      required
+                      value={inputs.painscale}
+                      onChange={(e) => handleInput(e)}
+                    />
+                  </div>
+                  </div>
+                
                 </div>
               </div>
               <hr />
@@ -1605,7 +1723,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
               <div className="w-full h-[7vh] flex justify-center items-center">
                 <div className="w-[90%] justify-between flex h-[7vh] items-center">
                   <h1 className="text-[20px] justify-center font-semibold text-[#ff5001]">
-                  Health Problems History
+                    Health Problems History
                   </h1>
                   <div
                     onClick={() => {
@@ -1723,15 +1841,17 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                     </ul>
                   </div>
                   <label className="w-[100%] text-[#f95005]  text-[1rem] lg:text-[20px] text-start">
-                  Non-Refundable Policy
+                    Non-Refundable Policy
                   </label>
                   <div className="text-[#45474b] text-[16px] font-semibold text-justify pl-[30px] ">
                     <ul>
                       <li style={{ listStyle: "disc" }}>
-                      All purchases of services, including classes, workshops, events, and therapy sessions, are non-refundable.
+                        All purchases of services, including classes, workshops,
+                        events, and therapy sessions, are non-refundable.
                       </li>
                       <li style={{ listStyle: "disc" }}>
-                      Fees cannot be transferred or carried forward under any circumstances.
+                        Fees cannot be transferred or carried forward under any
+                        circumstances.
                       </li>
                     </ul>
                   </div>

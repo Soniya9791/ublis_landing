@@ -178,39 +178,46 @@ export default function Header() {
           res.data[0],
           import.meta.env.VITE_ENCRYPTION_KEY
         );
-
-        console.log(data);
-
-        const refuId = data.data[0].refUtId;
-        const validIds = [1, 2, 3, 9];
-
-        if (!validIds.includes(refuId)) {
-          localStorage.removeItem("JWTtoken");
-          navigate("/signin");
+        if(data.token==false){
+          navigate("/expired")
         }
+  else{
+    console.log(data);
 
-        if (data.registerBtn.signUpCount === true) {
-          setopenMenu(true);
-        } else {
-          setopenMenu(false);
-        }
+    const refuId = data.data[0].refUtId;
+    const validIds = [1, 2, 3, 9];
 
-        setUseStatus({
-          signUpCount: data.registerBtn.signUpCount,
-          followUpCount: data.registerBtn.followUpCount,
-        });
+    if (!validIds.includes(refuId)) {
+      localStorage.removeItem("JWTtoken");
+      navigate("/signin");
+    }
 
-        // if (
-        //   localStorage.getItem("ublisYogaRegistration") === "true" &&
-        //   data.registerBtn.followUpCount
-        // ) {
-        //   setopenMenu(true);
-        // }
+    if (data.registerBtn.signUpCount === true) {
+      setopenMenu(true);
+    } else {
+      setopenMenu(false);
+    }
 
-        setLogindetails({
-          username: data.data[0].refUserName,
-          name: data.data[0].refStFName + " " + data.data[0].refStLName,
-        });
+    setUseStatus({
+      signUpCount: data.registerBtn.signUpCount,
+      followUpCount: data.registerBtn.followUpCount,
+    });
+
+    // if (
+    //   localStorage.getItem("ublisYogaRegistration") === "true" &&
+    //   data.registerBtn.followUpCount
+    // ) {
+    //   setopenMenu(true);
+    // }
+
+    setLogindetails({
+      username: data.data[0].refUserName,
+      name: data.data[0].refStFName + " " + data.data[0].refStLName,
+    });
+
+  }
+
+       
       });
     }
   }, [navigate, registrationmodal]);
