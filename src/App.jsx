@@ -22,6 +22,7 @@ import "./App.css";
 import Testimonials from "./components/01-Home/Testimonials";
 import Signup from "./components/11-SignUp/Signup";
 import SignIn from "./components/12-SignIn/Signin";
+import Forgetpassword from "./components/13-Forgotpassword/Forgotpassword";
 function App() {
   // const toast = useRef(null);
 
@@ -53,6 +54,7 @@ function App() {
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/forgetpassword" element={<Forgetpassword />} />
           <Route path="/register" element={<RegistrationStepper />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
