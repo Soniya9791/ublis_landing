@@ -18,15 +18,143 @@
   cursor: pointer;
 }
 
-
-
 .p-calendar:not(.p-calendar-disabled).p-focus > .p-inputtext {
   /* box-shadow: 0 0 0 0.2rem #c7d2fe00; */
   box-shadow: none;
 }
 
-
-.dateInput:focus{
-  background-color: #f95005;
+.p-calendar.p-focus {
+  border: 2px solid #f95005; /* Add your focus border style here */
+  border-radius: 5px; /* Ensure consistent rounding if needed */
 }
 
+.p-calendar .p-inputtext {
+  outline: none; /* Ensure no outline on the inner input */
+}
+
+.p-datepicker:not(.p-datepicker-inline) .p-datepicker-header {
+  background-color: #f95005;
+  color: white;
+  font-weight: bolder;
+}
+
+.p-datepicker:not(.p-disabled)
+  table
+  td
+  span:not(.p-highlight):not(.p-disabled):focus {
+  background: #f95005 !important;
+  color: white;
+  border-color: none !important;
+  box-shadow: 0 0 0 0.2rem #f95005;
+}
+.p-datepicker:not(.p-disabled)
+  table
+  td
+  span:not(.p-highlight):not(.p-disabled):hover {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #f95005 !important;
+  border-color: #f95005 !important;
+}
+
+.p-datepicker table td.p-datepicker-today > span {
+  background: #f95005 !important;
+  color: white;
+  border-color: none !important;
+  box-shadow: none;
+}
+
+.p-datepicker:not(.p-disabled)
+  .p-yearpicker
+  .p-yearpicker-year:not(.p-disabled):not(.p-highlight):hover {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #f95005 !important;
+  border-color: #f95005 !important;
+}
+
+.p-datepicker:not(.p-disabled)
+  .p-yearpicker
+  .p-yearpicker-year:not(.p-disabled):focus {
+  background: #f95005 !important;
+  color: white;
+  border-color: none !important;
+  box-shadow: none;
+}
+
+.p-yearpicker-year {
+  width: 45%;
+  align-content: space-around;
+  margin: 1%;
+  margin-left: 2.5%;
+  margin-right: 2.5;
+  border-color: none !important;
+  box-shadow: none;
+}
+
+.p-datepicker:not(.p-disabled)
+  .p-monthpicker
+  .p-monthpicker-month:not(.p-disabled):not(.p-highlight):focus {
+  background: #f95005;
+  color: white;
+  border-color: none !important;
+  box-shadow: none;
+}
+
+.p-datepicker:not(.p-disabled)
+  .p-monthpicker
+  .p-monthpicker-month:not(.p-disabled):not(.p-highlight):hover {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: 0 0 0 0.2rem #f95005 !important;
+  border-color: #f95005 !important;
+}
+
+.p-monthpicker-month {
+  width: 30%;
+  margin: 1%;
+
+  margin-left: 1.5%;
+  margin-right: 1.5%;
+}
+
+.p-datepicker table td > span.p-highlight {
+  background: #f95005 !important;
+  color: white;
+  border-color: none !important;
+  box-shadow: none;
+}
+
+.p-datepicker:not(.p-disabled)
+  .p-yearpicker
+  .p-yearpicker-year:not(.p-disabled):focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color: none !important;
+}
+
+.p-datepicker:not(.p-disabled)
+  .p-monthpicker
+  .p-monthpicker-month:not(.p-disabled):focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color: none !important;
+
+  color: #4b5563;
+}
+
+.p-datepicker .p-monthpicker .p-monthpicker-month.p-highlight {
+  color: #ffffff !important;
+  background: #f95005;
+  box-shadow: none;
+  border-color: none !important;
+}
+
+.p-datepicker .p-yearpicker .p-yearpicker-year.p-highlight {
+  color: white;
+  background: #f95005;
+  box-shadow: none;
+  border-color: none !important;
+}

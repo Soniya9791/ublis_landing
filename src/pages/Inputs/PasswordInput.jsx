@@ -36,7 +36,7 @@ const PasswordInput = ({
         <svg
           onClick={() => setShowPassword(!showPassword)}
           xmlns="http://www.w3.org/2000/svg"
-          className="absolute top-2 right-[10px] h-6 w-5 cursor-pointer stroke-slate-400 peer-disabled:cursor-not-allowed"
+          className="absolute top-2 right-[10px] h-6 w-[20px] cursor-pointer stroke-slate-400 peer-disabled:cursor-not-allowed"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -59,7 +59,7 @@ const PasswordInput = ({
         <svg
           onClick={() => setShowPassword(!showPassword)}
           xmlns="http://www.w3.org/2000/svg"
-          className="absolute top-2 right-[10px] h-6 w-5 cursor-pointer stroke-slate-400 peer-disabled:cursor-not-allowed"
+          className="absolute top-2 right-[10px] h-6  w-[20px] cursor-pointer stroke-slate-400 peer-disabled:cursor-not-allowed"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

@@ -41,11 +41,11 @@ const UsernameInput = ({
       </label>
 
       {(isInvalid || !isInvalid) && value.length === 0 ? (
-        <i className="absolute top-[10px] right-[10px] h-6 w-5 cursor-pointer stroke-slate-400 peer-disabled:cursor-not-allowed text-[20px] text-[#94a3b8] fa-regular fa-circle-check"></i>
+        <i className="absolute top-[10px] right-[10px] h-6 w-[20px] cursor-pointer stroke-slate-400 peer-disabled:cursor-not-allowed text-[20px] text-[#94a3b8] fa-regular fa-circle-check"></i>
       ) : isInvalid ? (
-        <i className="absolute top-[10px] right-[10px] h-6 w-5 cursor-pointer stroke-slate-400 peer-disabled:cursor-not-allowed text-[20px] text-[green] fa-regular fa-circle-check"></i>
+        <i className="absolute top-[10px] right-[10px] h-6 w-[20px] cursor-pointer stroke-slate-400 peer-disabled:cursor-not-allowed text-[20px] text-[green] fa-regular fa-circle-check"></i>
       ) : (
-        <i className="absolute top-[10px] right-[10px] h-6 w-5 cursor-pointer stroke-slate-400 peer-disabled:cursor-not-allowed text-[20px] text-[red] fa-regular fa-circle-xmark"></i>
+        <i className="absolute top-[10px] right-[10px] h-6 w-[20px] cursor-pointer stroke-slate-400 peer-disabled:cursor-not-allowed text-[20px] text-[red] fa-regular fa-circle-xmark"></i>
       )}
     </div>
   );

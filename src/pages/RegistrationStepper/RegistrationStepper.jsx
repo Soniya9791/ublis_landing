@@ -45,7 +45,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     lname: "",
     phoneno: "",
     whatsappno: "",
-    emgContaxt: "",
+    emgContaxt: 0,
     dob: "",
     age: "",
     gender: "",
@@ -83,6 +83,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     doctorname: "",
     hospitalname: "",
     painscale: "",
+    painscaleValue: "",
     duration: "",
     past: "",
     family: "",
@@ -221,6 +222,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
         console.log("-------------->", data);
 
         if (data.success) {
+          const Dob = myFormatToDatePicker(data.data.ProfileData.dob);
           localStorage.setItem("JWTtoken", "Bearer " + data.token + "");
           setBranchList(data.data.branchList);
           setInputs({
@@ -228,7 +230,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
             fname: data.data.ProfileData.fname,
             lname: data.data.ProfileData.lname,
             userid: data.data.ProfileData.username,
-            dob: data.data.ProfileData.dob,
+            dob: Dob,
             age: data.data.ProfileData.age,
             email: data.data.ProfileData.email,
             phoneno: data.data.ProfileData.phone,
@@ -432,6 +434,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     });
 
     setLoading(true);
+    const Dob = datePickerToMyFormat(inputs.dob);
+    const aDay = datePickerToMyFormat(inputs.anniversarydate);
 
     Axios.post(
       import.meta.env.VITE_API_URL + "profile/RegisterData",
@@ -457,7 +461,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
           ref_su_phoneno: inputs.phoneno,
           ref_su_emgContaxt: inputs.emgContaxt,
           ref_su_Whatsapp: inputs.whatsappno,
-          ref_su_dob: inputs.dob,
+          ref_su_dob: Dob,
           ref_su_age: inputs.age,
           ref_su_gender: inputs.gender,
           ref_su_qulify: inputs.qualification,
@@ -470,9 +474,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
           ref_su_seModeId: parseInt(inputs.sessiontype),
           ref_su_MaritalStatus: inputs.maritalstatus,
           ref_su_kidsCount: inputs.kidsCount,
-          ref_su_WeddingDate: inputs.anniversarydate
-            ? inputs.anniversarydate
-            : null,
+          ref_su_WeddingDate: inputs.anniversarydate ? aDay : null,
           ref_su_deliveryType: inputs.deliveryType ? inputs.deliveryType : null,
 
           ref_su_communicationPreference: parseInt(inputs.mode),
@@ -498,6 +500,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
           refHospital: inputs.hospitalname,
           refBackPain:
             selectedOption.backpain === "no" ? "No" : inputs.painscale,
+          refBackPainValue:
+            selectedOption.backpain === "no" ? "No" : inputs.painscaleValue,
           refProblem: inputs.duration,
           refPastHistory: inputs.past,
           refFamilyHistory: inputs.family,
@@ -540,6 +544,18 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
         console.log("Error: ", err);
       });
   };
+
+  function myFormatToDatePicker(dateString) {
+    const [year, month, day] = dateString.split("-");
+    return new Date(year, month - 1, day); // Month is 0-based in JavaScript Date
+  }
+
+  function datePickerToMyFormat(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 
   return (
     <div className="w-[100%] lg:w-[100%] h-[100vh] bg-black/80 blur-[0.2px]  flex justify-center items-center fixed z-50">
@@ -647,14 +663,25 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                     />
                   </div>
                   <div className="w-[48%]">
-                    <TextInput
+                    {/* <TextInput
                       id="emergencyno"
                       type="number"
                       name="emgContaxt "
-                      label="Emergency Contact number"
+                      label="Emergency Contact number *"
                       value={inputs.emgContaxt}
                       onChange={(e) => handleInput(e)}
                       required
+                    /> */}
+
+                    <TextInput
+                      id="emergencyno"
+                      type="number"
+                      name="emgContaxt"
+                      placeholder="your name"
+                      label="Phone Number *"
+                      required
+                      value={inputs.emgContaxt}
+                      onChange={(e) => handleInput(e)}
                     />
                   </div>
                 </div>
@@ -789,16 +816,25 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                   </div> */}
 
                   <div className="flex flex-col w-[48%] -mt-[13px]">
-                    <label className="bg-[#fff] text-[#ff621b] -mb-[15px] z-50 w-[150px] ml-[10px]">
+                    <label
+                      disabled={
+                        inputs.maritalstatus === "married" ? false : true
+                      }
+                      className="bg-[#fff] text-[#ff621b] -mb-[15px] z-50 w-[150px] ml-[10px]"
+                    >
                       &nbsp; Anniversary Date *
                     </label>
 
                     <Calendar
-                      label="Date of Birth *"
+                      label="Anniversary Date"
                       className="relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput"
                       value={inputs.anniversarydate}
                       onChange={(e) => handleInput(e)}
                       readOnlyInput
+                      disabled={
+                        inputs.maritalstatus === "married" ? false : true
+                      }
+                      name="anniversarydate"
                     />
                   </div>
                 </div>
@@ -815,7 +851,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       type="number"
                       required
                       disabled={
-                        inputs.maritalstatus === "married" ? false : true
+                        (inputs.gender === "female" ? false : true) ||
+                        (inputs.maritalstatus === "married" ? false : true)
                       }
                       value={inputs.kidsCount}
                       onChange={(e) => handleInput(e)}
@@ -832,7 +869,11 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                         { value: "C-Section", label: "C-Section" },
                       ]}
                       required
-                      disabled={inputs.kidsCount > 0 ? false : true}
+                      disabled={
+                        (inputs.kidsCount > 0 ? false : true) ||
+                        (inputs.gender === "female" ? false : true) ||
+                        (inputs.maritalstatus === "married" ? false : true)
+                      }
                       value={inputs.deliveryType}
                       onChange={(e) => handleInput(e)}
                     />
@@ -1653,40 +1694,38 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                     />
                   </div>
                   <div className="flex flex-row w-[100%] justify-between">
-                  <div className="mb-[20px] w-[48%]">
-                    <SelectInput
-                      id="pain"
-                      name="painscale"
-                      label="Pain Scale"
-                      options={[
-                        { value: "upper", label: "Upper" },
-                        { value: "middle", label: "Middle" },
-                        { value: "lower", label: "Lower" },
-                      ]}
-                      disabled={
-                        selectedOption.backpain === "yes" ? false : true
-                      }
-                      required
-                      value={inputs.painscale}
-                      onChange={(e) => handleInput(e)}
-                    />
+                    <div className="mb-[20px] w-[48%]">
+                      <SelectInput
+                        id="pain"
+                        name="painscale"
+                        label="Pain Scale"
+                        options={[
+                          { value: "upper", label: "Upper" },
+                          { value: "middle", label: "Middle" },
+                          { value: "lower", label: "Lower" },
+                        ]}
+                        disabled={
+                          selectedOption.backpain === "yes" ? false : true
+                        }
+                        required
+                        value={inputs.painscale}
+                        onChange={(e) => handleInput(e)}
+                      />
+                    </div>
+                    <div className="mb-[20px] w-[48%]">
+                      <TextInput
+                        id="painValue"
+                        name="painscaleValue"
+                        label="Additional Points(Back Pain)"
+                        disabled={
+                          selectedOption.backpain === "yes" ? false : true
+                        }
+                        required
+                        value={inputs.painscaleValue}
+                        onChange={(e) => handleInput(e)}
+                      />
+                    </div>
                   </div>
-                  <div className="mb-[20px] w-[48%]">
-                  <TextInput
-                      id="pain"
-                      name="painscale"
-                      label="Additional Points(Back Pain)"
-                     
-                      disabled={
-                        selectedOption.backpain === "yes" ? false : true
-                      }
-                      required
-                      value={inputs.painscale}
-                      onChange={(e) => handleInput(e)}
-                    />
-                  </div>
-                  </div>
-                
                 </div>
               </div>
               <hr />

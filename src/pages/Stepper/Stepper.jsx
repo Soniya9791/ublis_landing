@@ -8,6 +8,7 @@ import PasswordInput from "../Inputs/PasswordInput";
 import ErrorMessage from "../Messages/ErrorMessage";
 import UsernameInput from "../Inputs/UsernameInput";
 import CountdownComponent from "../Countdown/Countdown";
+import { Calendar } from "primereact/calendar";
 
 export const Stepper = () => {
   const navigate = useNavigate();
@@ -38,6 +39,18 @@ export const Stepper = () => {
   //   setStepperactive((prev) => (prev < 2 ? prev + 1 : prev));
   // };
 
+  // function myFormatToDatePicker(dateString) {
+  //   const [year, month, day] = dateString.split("-");
+  //   return new Date(year, month - 1, day); // Month is 0-based in JavaScript Date
+  // }
+
+  function datePickerToMyFormat(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
   const handleBack = () => {
     setStepperactive((prev) => (prev > 1 ? prev - 1 : prev));
   };
@@ -56,7 +69,6 @@ export const Stepper = () => {
 
   const [verify, setVerify] = useState(false);
   const [emailVerify, setEmailVerify] = useState(false);
-
 
   const handleinput = (event) => {
     if (event.target.name === "username") {
@@ -96,14 +108,10 @@ export const Stepper = () => {
           });
         });
     } else if (event.target.name === "email") {
-      
-
-    
-        setInput({
-          ...input,
-          [event.target.name]: event.target.value,
-        });
-      
+      setInput({
+        ...input,
+        [event.target.name]: event.target.value,
+      });
 
       Axios.post(import.meta.env.VITE_API_URL + "users/validateEmail", {
         temp_su_email: event.target.value,
@@ -251,12 +259,11 @@ export const Stepper = () => {
       return 0;
     }
 
-
-    if(!emailVerify){
+    if (!emailVerify) {
       setFormerror1({
-        errorstatus:true,
-        errormessage:"Email Already Exits"
-      })
+        errorstatus: true,
+        errormessage: "Email Already Exits",
+      });
 
       return 0;
     }
@@ -334,10 +341,11 @@ export const Stepper = () => {
 
     setSubmitloadingStatus(true);
 
+    const Dob = datePickerToMyFormat(input.dob);
     Axios.post(import.meta.env.VITE_API_URL + "users/signup", {
       temp_su_fname: input.fname,
       temp_su_lname: input.lname,
-      temp_su_dob: input.dob,
+      temp_su_dob: Dob,
       temp_su_age: input.age,
       temp_su_phone: input.phoneno,
       temp_su_email: input.email,
@@ -434,8 +442,8 @@ export const Stepper = () => {
                       onChange={handleinput}
                     />
                   </div>
-                  <div className="w-[49%] relative">
-                    <TextInput
+                  <div className="w-[49%] flex flex-col -mt-[13px]">
+                    {/* <TextInput
                       id="dob"
                       name="dob"
                       type="date"
@@ -444,6 +452,19 @@ export const Stepper = () => {
                       required
                       value={input.dob}
                       onChange={handleinputdob}
+                    /> */}
+
+                    <label className="bg-[#fff] text-[#ff621b] -mb-[15px] z-50 w-[150px] ml-[10px] w-[100px]">
+                      Date of Birth
+                    </label>
+
+                    <Calendar
+                      label="Date of Birth"
+                      className="relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput"
+                      value={input.dob}
+                      onChange={handleinputdob}
+                      required
+                      name="dob"
                     />
                   </div>
                 </div>
@@ -467,7 +488,6 @@ export const Stepper = () => {
                       label="Email"
                       value={input.email}
                       onChange={handleinput}
-
                       required
                       isInvalid={emailVerify}
                     />
