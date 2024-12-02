@@ -839,14 +839,19 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       disabled={
                         inputs.maritalstatus === "married" ? false : true
                       }
-                      className="bg-[#fff] text-[#ff621b] -mb-[15px] z-50 w-[150px] ml-[10px]"
+                      className={`bg-[#fff] text-[#ff621b] -mb-[15px] z-50 w-[150px] ml-[10px] 
+                        ${inputs.maritalstatus === "married" ? "" : "text-[#8e98ab]"}`}
+                      
                     >
                       &nbsp; Anniversary Date *
                     </label>
 
                     <Calendar
                       label="Anniversary Date"
-                      className="relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput"
+                      className={`relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput ${
+                        inputs.maritalstatus === "married" ? "" : "cursor-not-allowed"
+                      }`}
+                      // className="relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput"
                       value={inputs.anniversarydate}
                       onChange={(e) => handleInput(e)}
                       readOnlyInput
