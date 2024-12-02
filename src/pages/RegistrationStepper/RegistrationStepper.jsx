@@ -435,7 +435,6 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
 
     setLoading(true);
     const Dob = datePickerToMyFormat(inputs.dob);
-    const aDay = datePickerToMyFormat(inputs.anniversarydate);
 
     Axios.post(
       import.meta.env.VITE_API_URL + "profile/RegisterData",
@@ -474,7 +473,9 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
           ref_su_seModeId: parseInt(inputs.sessiontype),
           ref_su_MaritalStatus: inputs.maritalstatus,
           ref_su_kidsCount: inputs.kidsCount,
-          ref_su_WeddingDate: inputs.anniversarydate ? aDay : null,
+          ref_su_WeddingDate: inputs.anniversarydate
+            ? datePickerToMyFormat(inputs.anniversarydate)
+            : null,
           ref_su_deliveryType: inputs.deliveryType ? inputs.deliveryType : null,
 
           ref_su_communicationPreference: parseInt(inputs.mode),
@@ -551,6 +552,24 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
   }
 
   function datePickerToMyFormat(date) {
+    console.log("date", date);
+
+    // Ensure `date` is a Date object
+    if (!(date instanceof Date)) {
+      try {
+        date = new Date(date);
+      } catch (error) {
+        console.error("Invalid date provided:", date);
+        return null; // Return null if the conversion fails
+      }
+    }
+
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+      console.error("Invalid Date object:", date);
+      return null;
+    }
+
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
     const day = String(date.getDate()).padStart(2, "0");
