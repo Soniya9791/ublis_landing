@@ -11,6 +11,9 @@ import Axios from "axios";
 import CryptoJS from "crypto-js";
 import { useNavigate } from "react-router-dom";
 import "./RegistrationStepper.css";
+import { FileUpload } from "primereact/fileupload";
+import { ImUpload2 } from "react-icons/im";
+import { MdDelete } from "react-icons/md";
 
 import { Calendar } from "primereact/calendar";
 
@@ -109,7 +112,16 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     // Parse the string into a JSON object
     return JSON.parse(decryptedString);
   };
+  const handleStateChange = (index, field, value) => {
+    // Create a shallow copy of the documents array
+    const updatedDocuments = [...documents];
 
+    // Update the specific field for the specified index
+    updatedDocuments[index][field] = value;
+
+    // Update the state with the modified array
+    setDocuments(updatedDocuments);
+  };
   const [stepperactive, setStepperactive] = useState(1);
 
   const handleNext = () => {
@@ -132,31 +144,73 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     setStates(countryStates);
   }, []);
 
-  const handleStateChange = (event) => {
-    1909;
-    if (event.target.name != "tempstate") {
-      const stateCode = event.target.value;
-      setSelectedState(stateCode);
-      if (stateCode) {
-        const stateCities = City.getCitiesOfState("IN", stateCode); // 'IN' for India
-        setCities(stateCities);
-      } else {
-        setCities([]); // Reset cities if no state is selected
-      }
+  const [documents, setDocuments] = useState([
+    { fileName: "", file: null },
+    { filePath: "", file: null },
+    { file: "", file: null }
+    
 
-      setInputs({
-        ...inputs,
-        [event.target.name]: event.target.value,
-      });
-    }
+     // Initial structure of a document
+  ]);
+
+  const handleAddDocument = () => {
+    setDocuments([...documents, { fileName: "", file: null }]);
   };
 
-  const [selectedOption, setSelectedOption] = useState({
-    accident: "",
-    breaks: "",
-    care: "",
-    backpain: "",
-  });
+  const handleFileChange = (index, file) => {
+    const updatedDocuments = [...documents];
+    updatedDocuments[index].file = file;
+    setDocuments(updatedDocuments);
+  };
+
+  const handleInputChange = (index, field, value) => {
+    const updatedDocuments = [...documents];
+    updatedDocuments[index][field] = value;
+    setDocuments(updatedDocuments);
+  };
+
+  const uploaddocument = async (index) => {
+    console.log("index", index);
+
+    const document = documents[index];
+    if (!document.fileName || !document.file) {
+      alert("Please provide both file name and file before uploading.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", document.file);
+
+    console.log("formData", formData);
+    try {
+      console.log("formData", formData);
+      Axios.post(
+        import.meta.env.VITE_API_URL + "profile/userHealthReportUpload",
+        {
+          file: document.file,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("JWTtoken"),
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      ).then((res)=>{
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        let updatedDocuments = [...documents];
+        updatedDocuments[index] = { ...updatedDocuments[index], filePath: data.filePath };
+        setDocuments(updatedDocuments); 
+
+      })
+    } catch (error) {
+      console.error("Error uploading document: ", error);
+      alert("Failed to upload document.");
+    }
+  };
 
   const [branchList, setBranchList] = useState([]);
 
@@ -840,8 +894,11 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                         inputs.maritalstatus === "married" ? false : true
                       }
                       className={`bg-[#fff] text-[#ff621b] -mb-[15px] z-50 w-[150px] ml-[10px] 
-                        ${inputs.maritalstatus === "married" ? "" : "text-[#8e98ab]"}`}
-                      
+                        ${
+                          inputs.maritalstatus === "married"
+                            ? ""
+                            : "text-[#8e98ab]"
+                        }`}
                     >
                       &nbsp; Anniversary Date *
                     </label>
@@ -849,7 +906,9 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                     <Calendar
                       label="Anniversary Date"
                       className={`relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput ${
-                        inputs.maritalstatus === "married" ? "" : "cursor-not-allowed"
+                        inputs.maritalstatus === "married"
+                          ? ""
+                          : "cursor-not-allowed"
                       }`}
                       // className="relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput"
                       value={inputs.anniversarydate}
@@ -1773,8 +1832,132 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
             </form>
           </>
         )}
-
         {stepperactive === 4 && (
+          <>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                // Placeholder for form submission logic
+              }}
+            >
+              <div className="w-full h-[7vh] flex justify-center items-center">
+                <div className="w-[90%] justify-between flex h-[7vh] items-center">
+                  <h1 className="text-[20px] justify-center font-semibold text-[#ff5001]">
+                    Past or Present Health Problems
+                  </h1>
+                  <div
+                    onClick={() => {
+                      console.log("Close registration clicked");
+                    }}
+                  >
+                    <i className="fa-solid fa-xmark text-[20px] cursor-pointer"></i>
+                  </div>
+                </div>
+              </div>
+              <hr />
+
+              <div className="w-full h-[73vh] overflow-auto">
+                <div className="w-[90%] flex flex-wrap my-4 items-center justify-end gap-x- lg:gap-x-10 gap-y-4">
+                  <button
+                    type="button"
+                    onClick={handleAddDocument}
+                    className="py-2 px-4 bg-[#f95005] text-white rounded hover:bg-[#f95005]"
+                  >
+                    Add Document
+                  </button>
+                </div>
+
+                {documents.map((doc, index) => (
+                  <div
+                    key={index}
+                    className="w-[100%] flex flex-row justify-evenly lg:p-[10px] mt-5 lg:mt-0"
+                  >
+                    <div className="mb-4 w-[40%] flex flex-col justify-start text-start">
+                      <label
+                        htmlFor={`fileName-${index}`}
+                        className="block text-gray-700 font-medium mb-2"
+                      >
+                        Enter File Name:
+                      </label>
+                      <input
+                        type="text"
+                        id={`fileName-${index}`}
+                        name={`fileName-${index}`}
+                        placeholder="Enter a name for the file"
+                        className="w-full border border-gray-300 rounded px-4 py-2"
+                        value={documents[index]?.fileName || ""}
+                        onChange={(e) =>
+                          handleStateChange(index, "fileName", e.target.value)
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="mb-4 w-[40%] flex flex-col justify-start text-start">
+                      <label
+                        htmlFor={`fileInput-${index}`}
+                        className="block text-gray-700 font-medium mb-2"
+                      >
+                        Upload File:
+                      </label>
+                      <input
+                        type="file"
+                        id={`fileInput-${index}`}
+                        name={`file-${index}`}
+                        accept="application/pdf,image/*"
+                        className="w-full border border-gray-300 rounded px-4 py-2 uploadfile"
+                        onChange={(e) =>
+                          handleStateChange(index, "file", e.target.files[0])
+                        }
+                        required
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      className="text-[green]"
+                      onClick={() => uploaddocument(index)}
+                    >
+                      <ImUpload2 className="w-[30px] h-[25px]" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updatedDocuments = documents.filter(
+                          (_, idx) => idx !== index
+                        );
+                        setDocuments(updatedDocuments);
+                      }}
+                      className="text-[red]"
+                    >
+                      <MdDelete className="w-[30px] h-[30px]" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <hr />
+              <div className="w-[90%] lg:w-[95%] h-[10vh] flex justify-between items-center">
+                <button
+                  type="button"
+                  className="bg-[#ff5001] border-2 border-[#ff5001] text-[#fff] font-semibold px-3 py-2 rounded my-4 transition-colors duration-300 ease-in-out hover:bg-[#fff] hover:text-[#ff5001]"
+                  onClick={() => {
+                    console.log("Back clicked");
+                  }}
+                >
+                  <i className="fa-solid fa-arrow-left"></i>
+                  &nbsp;&nbsp;Back
+                </button>
+                <button
+                  type="submit"
+                  className="disabled:bg-[#ff7a3c] disabled:font-[#fff] disabled:hover:cursor-not-allowed disabled:hover:text-[#fff] disabled:border-[#ff7a3c] bg-[#ff5001] border-2 border-[#ff5001] text-[#fff] font-semibold px-3 py-2 rounded transition-colors duration-300 ease-in-out hover:bg-[#fff] hover:text-[#ff5001]"
+                >
+                  Next&nbsp;&nbsp;
+                  <i className="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+            </form>
+          </>
+        )}
+
+        {stepperactive === 5 && (
           <>
             <form
               onSubmit={(e) => {

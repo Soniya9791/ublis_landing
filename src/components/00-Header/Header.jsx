@@ -150,7 +150,10 @@ export default function Header() {
     }
   };
 
-  const [logindetails, setLogindetails] = useState();
+  const [logindetails, setLogindetails] = useState({
+    username: "",
+    name: "",
+  });
   const [useStatus, setUseStatus] = useState({});
 
   // UseEffect to listen for outside clicks
@@ -178,49 +181,48 @@ export default function Header() {
           res.data[0],
           import.meta.env.VITE_ENCRYPTION_KEY
         );
-        if(data.token==false){
-          navigate("/expired")
+
+        console.log("-------------------", data);
+
+        if (data.token == false) {
+          navigate("/expired");
+        } else {
+          console.log(data);
+
+          const refuId = data.data[0].refUtId;
+          const validIds = [1, 2, 3, 9];
+
+          if (!validIds.includes(refuId)) {
+            localStorage.removeItem("JWTtoken");
+            navigate("/signin");
+          }
+
+          if (data.registerBtn.signUpCount === true) {
+            setopenMenu(true);
+          } else {
+            setopenMenu(false);
+          }
+
+          setUseStatus({
+            signUpCount: data.registerBtn.signUpCount,
+            followUpCount: data.registerBtn.followUpCount,
+          });
+
+          // if (
+          //   localStorage.getItem("ublisYogaRegistration") === "true" &&
+          //   data.registerBtn.followUpCount
+          // ) {
+          //   setopenMenu(true);
+          // }
+
+          setLogindetails({
+            username: data.data[0].refUserName,
+            name: data.data[0].refStFName + " " + data.data[0].refStLName,
+          });
         }
-  else{
-    console.log(data);
-
-    const refuId = data.data[0].refUtId;
-    const validIds = [1, 2, 3, 9];
-
-    if (!validIds.includes(refuId)) {
-      localStorage.removeItem("JWTtoken");
-      navigate("/signin");
-    }
-
-    if (data.registerBtn.signUpCount === true) {
-      setopenMenu(true);
-    } else {
-      setopenMenu(false);
-    }
-
-    setUseStatus({
-      signUpCount: data.registerBtn.signUpCount,
-      followUpCount: data.registerBtn.followUpCount,
-    });
-
-    // if (
-    //   localStorage.getItem("ublisYogaRegistration") === "true" &&
-    //   data.registerBtn.followUpCount
-    // ) {
-    //   setopenMenu(true);
-    // }
-
-    setLogindetails({
-      username: data.data[0].refUserName,
-      name: data.data[0].refStFName + " " + data.data[0].refStLName,
-    });
-
-  }
-
-       
       });
     }
-  }, [navigate, registrationmodal]);
+  }, [navigate, registrationmodal, isDropdownOpen]);
 
   // , [navigate]
 
@@ -317,6 +319,15 @@ export default function Header() {
                       <span className="text-[14px] text-[#f95005]">
                         {logindetails.username}
                       </span>
+                    </li>
+                  
+                    <li
+                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                        handleNavigate("/Landingprofile"); 
+                      }}
+                    >
+                      Profile
                     </li>
                     <li
                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer"

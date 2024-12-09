@@ -23,6 +23,7 @@ import Testimonials from "./components/01-Home/Testimonials";
 import Signup from "./components/11-SignUp/Signup";
 import SignIn from "./components/12-SignIn/Signin";
 import Forgetpassword from "./components/13-Forgotpassword/Forgotpassword";
+import Landingprofile from "./components/14-Landingprofile/Landingprofile";
 function App() {
   // const toast = useRef(null);
 
@@ -52,6 +53,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/testimonials" element={<Testimonials />} />
+          <Route path="/Landingprofile" element={<Landingprofile/>} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/forgetpassword" element={<Forgetpassword />} />

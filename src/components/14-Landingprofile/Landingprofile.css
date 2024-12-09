@@ -1,0 +1,35 @@
+.userProfilePage .basicProfileCont .card {
+  display: flex;
+  justify-content: space-between;
+}
+
+.basicProfileCont {
+  background-color: #fff;
+  /* margin: 30px; */
+  /* padding: 40px; */
+  border-radius: 10px;
+}
+
+.personalDet .userName {
+  display: flex;
+}
+
+.p-button.p-fileupload-choose.p-component{
+  background: #f95005;
+  }
+.p-fileupload.p-fileupload-advanced.p-component{
+  width: 100%;
+}
+
+
+.uploadfile::file-selector-button
+{
+  border: none;
+  background-color: #f95005;
+  color: white;
+  padding: 2px;
+  border-radius: 6px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+}

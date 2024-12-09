@@ -158,3 +158,26 @@
   box-shadow: none;
   border-color: none !important;
 }
+.p-fileupload.p-fileupload-advanced.p-component{
+  width: 60%;
+}
+[data-pc-section="details"] {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+.p-fileupload-file-badge.p-badge.p-component.p-badge-warning{
+  margin-top: 0%;
+}
+
+.uploadfile::file-selector-button
+{
+  border: none;
+  background-color: #f95005;
+  color: white;
+  padding: 2px;
+  border-radius: 6px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+}
