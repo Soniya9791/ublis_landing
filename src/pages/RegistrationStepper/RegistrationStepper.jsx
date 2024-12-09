@@ -147,10 +147,9 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
   const [documents, setDocuments] = useState([
     { fileName: "", file: null },
     { filePath: "", file: null },
-    { file: "", file: null }
-    
+    { file: "", file: null },
 
-     // Initial structure of a document
+    // Initial structure of a document
   ]);
 
   const handleAddDocument = () => {
@@ -195,17 +194,19 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
             "Content-Type": "multipart/form-data",
           },
         }
-      ).then((res)=>{
+      ).then((res) => {
         const data = decrypt(
           res.data[1],
           res.data[0],
           import.meta.env.VITE_ENCRYPTION_KEY
         );
         let updatedDocuments = [...documents];
-        updatedDocuments[index] = { ...updatedDocuments[index], filePath: data.filePath };
-        setDocuments(updatedDocuments); 
-
-      })
+        updatedDocuments[index] = {
+          ...updatedDocuments[index],
+          filePath: data.filePath,
+        };
+        setDocuments(updatedDocuments);
+      });
     } catch (error) {
       console.error("Error uploading document: ", error);
       alert("Failed to upload document.");
@@ -751,7 +752,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       type="number"
                       name="emgContaxt"
                       placeholder="your name"
-                      label="Phone Number *"
+                      label="Emergency Contact Number *"
                       required
                       value={inputs.emgContaxt}
                       onChange={(e) => handleInput(e)}
@@ -907,7 +908,9 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       label="Anniversary Date"
                       className={`relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput ${
                         inputs.maritalstatus === "married"
+                         
                           ? ""
+                         
                           : "cursor-not-allowed"
                       }`}
                       // className="relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput"
