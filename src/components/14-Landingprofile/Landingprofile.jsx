@@ -29,12 +29,7 @@ export default function Landingprofile() {
 
   const [documents, setDocuments] = useState([{ fileName: "", file: null }]);
 
-  const handleInputChange = (index, field, value) => {
-    const updatedDocuments = [...documents];
-    updatedDocuments[index][field] = value;
-    setDocuments(updatedDocuments);
-  };
-
+ 
   const handleAddDocument = () => {
     setDocuments([...documents, { fileName: "", file: null }]);
   };
@@ -109,6 +104,26 @@ export default function Landingprofile() {
         console.log("Error: ", err);
       });
   };
+  const handleInputChange = (index, field, value) => {
+    const updatedDocuments = [...documents];
+    if (field === "file") {
+      updatedDocuments[index][field] = value;
+      updatedDocuments[index].previewUrl = URL.createObjectURL(value); // Generate preview URL
+    } else {
+      updatedDocuments[index][field] = value;
+    }
+    setDocuments(updatedDocuments);
+  };
+  
+  const handlePreviewDocument = (index) => {
+    const file = documents[index];
+    if (file.previewUrl) {
+      window.open(file.previewUrl, "_blank"); // Open in a new tab
+    } else {
+      alert("No document available for preview.");
+    }
+  };
+  
 
   const handleInputVal = (event) => {
     const { name, value } = event.target;
@@ -1689,70 +1704,65 @@ export default function Landingprofile() {
                       </div>
 
                       {documents.map((doc, index) => (
-                        <div
-                          key={index}
-                          className="w-[100%] gap-5 flex flex-row  lg:p-[10px] mt-5 lg:mt-0"
-                        >
-                             <div className=" pt-5"><FaEye className="w-[30px] h-[25px] text-[#f95005]" /></div>
-                          <div className="mb-4 w-[40%]">
-                            <label
-                              htmlFor={`fileName-${index}`}
-                              className="block text-gray-700 font-medium mb-2"
-                            >
-                              Enter File Name:
-                            </label>
-                            <input
-                              type="text"
-                              id={`fileName-${index}`}
-                              name={`fileName-${index}`}
-                              placeholder="Enter a name for the file"
-                              className="w-full border border-gray-300 rounded px-4 py-2"
-                              value={doc.fileName}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  index,
-                                  "fileName",
-                                  e.target.value
-                                )
-                              }
-                              required
-                            />
-                          </div>
-                          <div className="mb-4 w-[40%]">
-                            <label
-                              htmlFor={`fileInput-${index}`}
-                              className="block text-gray-700 font-medium mb-2 "
-                            >
-                              Upload File:
-                            </label>
-                            <input
-                              type="file"
-                              id={`fileInput-${index}`}
-                              name={`file-${index}`}
-                              accept="application/pdf,image/*"
-                              className="w-full border border-gray-300 rounded px-4 py-2 uploadfile"
-                              onChange={(e) =>
-                                handleInputChange(
-                                  index,
-                                  "file",
-                                  e.target.files[0]
-                                )
-                              }
-                              required
-                            />
-                          </div>
-                          <button type="submit" className="text-[green]  ">
-                            <ImUpload2 className="w-[30px] h-[25px]" />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteDocument(index)}
-                            className="text-[red]"
-                          >
-                            <MdDelete className="w-[30px] h-[30px]" />
-                          </button>
-                        </div>
-                      ))}
+  <div
+    key={index}
+    className="w-[100%] gap-5 flex flex-row lg:p-[10px] mt-5 lg:mt-0"
+  >
+    <div className="pt-5">
+      <FaEye
+        className="w-[30px] h-[25px] text-[#f95005] cursor-pointer"
+        onClick={() => handlePreviewDocument(index)}
+      />
+    </div>
+    <div className="mb-4 w-[40%]">
+      <label
+        htmlFor={`fileName-${index}`}
+        className="block text-gray-700 font-medium mb-2"
+      >
+        Enter File Name:
+      </label>
+      <input
+        type="text"
+        id={`fileName-${index}`}
+        name={`fileName-${index}`}
+        placeholder="Enter a name for the file"
+        className="w-full border border-gray-300 rounded px-4 py-2"
+        value={doc.fileName}
+        onChange={(e) =>
+          handleInputChange(index, "fileName", e.target.value)
+        }
+        required
+      />
+    </div>
+    <div className="mb-4 w-[40%]">
+      <label
+        htmlFor={`fileInput-${index}`}
+        className="block text-gray-700 font-medium mb-2"
+      >
+        Upload File:
+      </label>
+      <input
+        type="file"
+        id={`fileInput-${index}`}
+        name={`file-${index}`}
+        accept="application/pdf,image/*"
+        className="w-full border border-gray-300 rounded px-4 py-2 uploadfile"
+        onChange={(e) => handleInputChange(index, "file", e.target.files[0])}
+        required
+      />
+    </div>
+    <button type="submit" className="text-[green]">
+      <ImUpload2 className="w-[30px] h-[25px]" />
+    </button>
+    <button
+      type="button"
+      onClick={() => handleDeleteDocument(index)}
+      className="text-[red]"
+    >
+      <MdDelete className="w-[30px] h-[30px]" />
+    </button>
+  </div>
+))}
 
                      
                     </div>
