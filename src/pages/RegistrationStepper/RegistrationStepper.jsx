@@ -113,7 +113,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     return JSON.parse(decryptedString);
   };
 
-  const [stepperactive, setStepperactive] = useState(4);
+  const [stepperactive, setStepperactive] = useState(1);
 
   const handleNext = () => {
     setStepperactive((prev) => (prev < 4 ? prev + 1 : prev));
@@ -139,33 +139,52 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     },
   ]);
 
-  // Function to open the file in a new tab
-  // const handlePreviewDocument = () => {
-  //   const file = uploadDocument.refMedDocFile; // Ensure this is the file object
-  //   console.log("file", file);
+  const handleRemoveDocument = (index) => {
+    console.log("uploadDocuments[index].refMedDocPath",uploadDocuments[index].refMedDocPath);
+    if(uploadDocuments[index].refMedDocPath=="")
+    {
+      setUploadDocuments((prev) => prev.filter((_, idx) => idx !== index));
+    }
+    else{
+      try {
+      Axios.post(
+        import.meta.env.VITE_API_URL + "profile/deleteMedicalDocument",
+        { filePath: uploadDocuments[index].refMedDocPath },
+        {
+          headers: {
+            Authorization: localStorage.getItem("JWTtoken"),
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((res) => {
+          console.log(res, "res");
+      
+          const data = decrypt(
+            res.data[1],
+            res.data[0],
+            import.meta.env.VITE_ENCRYPTION_KEY
+          );
+          console.log("data", data);
+      
+          if (data.success) {
+            console.log("Success delete")
+            alert("success")
+            setUploadDocuments((prev) => prev.filter((_, idx) => idx !== index));
+          }
+        })
+        .catch((err) => {
+          console.error("Error Deleting the File:", err);
+        });
+      
+    } catch (error) {
+      console.error("Error in Delete Document:", error);
+    }
+    }
+  
+  };
 
-  //   if (file) {
-  //     try {
-  //       const binaryContent = atob(file.content);
-  //       const byteArray = new Uint8Array(binaryContent.length);
-
-  //       for (let i = 0; i < binaryContent.length; i++) {
-  //         byteArray[i] = binaryContent.charCodeAt(i);
-  //       }
-
-  //       const blob = new Blob([byteArray], { type: file.contentType });
-  //       const url = URL.createObjectURL(blob);
-  //       window.open(url, "_blank");
-
-  //       setTimeout(() => URL.revokeObjectURL(url), 1000);
-  //     } catch (error) {
-  //       console.error("Error previewing document:", error);
-  //     }
-  //   } else {
-  //     console.error("No file to preview");
-  //   }
-  // };
-
+  
   const handlePreviewDocument = (index) => {
     const file = uploadDocuments[index].refMedDocFile;
     if (file) {
@@ -248,9 +267,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     ]);
   };
 
-  const handleRemoveDocument = (index) => {
-    setUploadDocuments((prev) => prev.filter((_, idx) => idx !== index));
-  };
+
 
   // Fetch states when component mounts (you can replace 'IN' with any country code)
   useEffect(() => {
@@ -477,6 +494,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
         import.meta.env.VITE_API_URL + "profile/sectionTime",
         {
           sectionId: parseInt(value),
+          branch:parseInt(inputs.branch)
         },
         {
           headers: {
