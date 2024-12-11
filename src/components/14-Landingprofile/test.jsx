@@ -11,16 +11,15 @@ import Axios from "axios";
 import CryptoJS from "crypto-js";
 import { useNavigate } from "react-router-dom";
 import "./RegistrationStepper.css";
-import { FaEye } from "react-icons/fa";
+import { FileUpload } from "primereact/fileupload";
 import { ImUpload2 } from "react-icons/im";
 import { MdDelete } from "react-icons/md";
-import Swal from "sweetalert2";
+import { FaEye } from "react-icons/fa";
 import { Calendar } from "primereact/calendar";
 
 const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
   let today = new Date();
   let month = today.getMonth();
   let year = today.getFullYear();
@@ -113,152 +112,16 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     return JSON.parse(decryptedString);
   };
 
-  const [stepperactive, setStepperactive] = useState(4);
-
-  const handleNext = () => {
-    setStepperactive((prev) => (prev < 4 ? prev + 1 : prev));
-  };
-
-  const handleBack = () => {
-    setStepperactive((prev) => (prev > 1 ? prev - 1 : prev));
-  };
-
-  const [addessschecked, setAddressChecked] = useState(false);
-  const [agreementchecked, setAgreementchecked] = useState(false);
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [selectedState, setSelectedState] = useState("");
-
-  const [uploadDocuments, setUploadDocuments] = useState([
-    {
-      refMedDocName: "",
-      refMedDocPath: "",
-      refMedDocFile: { contentType: "", content: "" },
-      refMedDocUpload: false,
-      refMedDocUpBtn: false,
-    },
-  ]);
-
-  // Function to open the file in a new tab
-  // const handlePreviewDocument = () => {
-  //   const file = uploadDocument.refMedDocFile; // Ensure this is the file object
-  //   console.log("file", file);
-
-  //   if (file) {
-  //     try {
-  //       const binaryContent = atob(file.content);
-  //       const byteArray = new Uint8Array(binaryContent.length);
-
-  //       for (let i = 0; i < binaryContent.length; i++) {
-  //         byteArray[i] = binaryContent.charCodeAt(i);
-  //       }
-
-  //       const blob = new Blob([byteArray], { type: file.contentType });
-  //       const url = URL.createObjectURL(blob);
-  //       window.open(url, "_blank");
-
-  //       setTimeout(() => URL.revokeObjectURL(url), 1000);
-  //     } catch (error) {
-  //       console.error("Error previewing document:", error);
-  //     }
-  //   } else {
-  //     console.error("No file to preview");
-  //   }
-  // };
-
   const handlePreviewDocument = (index) => {
-    const file = uploadDocuments[index].refMedDocFile;
-    if (file) {
-      try {
-        const binaryContent = atob(file.content);
-        const byteArray = new Uint8Array(binaryContent.length);
-        for (let i = 0; i < binaryContent.length; i++) {
-          byteArray[i] = binaryContent.charCodeAt(i);
-        }
-
-        const blob = new Blob([byteArray], { type: file.contentType });
-        const url = URL.createObjectURL(blob);
-
-        Swal.fire({
-          title: "Document Preview",
-          html: `<iframe src="${url}" width="100%" height="500px"></iframe>`,
-          showCloseButton: true,
-          focusConfirm: false,
-          confirmButtonText: "Close",
-          preConfirm: () => {
-            URL.revokeObjectURL(url);
-          },
-        });
-      } catch (error) {
-        console.error("Error previewing document:", error);
-      }
+    const file = documents[index];
+    if (file.previewUrl) {
+      window.open(file.previewUrl, "_blank"); // Open in a new tab
     } else {
-      console.error("No file to preview");
+      alert("No document available for preview.");
     }
   };
 
-  const storeDocument = (index) => {
-    const uploadDocument = uploadDocuments[index];
-    try {
-      Axios.post(
-        import.meta.env.VITE_API_URL + "profile/userHealthReportUpload",
-        uploadDocument.refMedDocFile,
-        {
-          headers: {
-            Authorization: localStorage.getItem("JWTtoken"),
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
-        .then((res) => {
-          const data = decrypt(
-            res.data[1],
-            res.data[0],
-            import.meta.env.VITE_ENCRYPTION_KEY
-          );
-          setUploadDocuments((prev) => {
-            const updatedDocuments = [...prev];
-            updatedDocuments[index] = {
-              ...updatedDocuments[index],
-              refMedDocPath: data.filePath,
-              refMedDocFile: data.file,
-              refMedDocUpload: true,
-            };
-            return updatedDocuments;
-          });
-        })
-        .catch((err) => {
-          console.error("Error uploading file:", err);
-        });
-    } catch (error) {
-      console.error("Error in storeDocument:", error);
-    }
-  };
-
-  const handleAddDocument = () => {
-    setUploadDocuments((prev) => [
-      ...prev,
-      {
-        refMedDocName: "",
-        refMedDocPath: "",
-        refMedDocFile: { contentType: "", content: "" },
-        refMedDocUpload: false,
-        refMedDocUpBtn: false,
-      },
-    ]);
-  };
-
-  const handleRemoveDocument = (index) => {
-    setUploadDocuments((prev) => prev.filter((_, idx) => idx !== index));
-  };
-
-  // Fetch states when component mounts (you can replace 'IN' with any country code)
-  useEffect(() => {
-    const countryStates = State.getStatesOfCountry("IN"); // 'IN' for India
-    setStates(countryStates);
-  }, []);
-
-  const handleStateChange = (event) => {
+  const handleStateoption = (event) => {
     1909;
     if (event.target.name != "tempstate") {
       const stateCode = event.target.value;
@@ -277,12 +140,117 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     }
   };
 
-  const [selectedOption, setSelectedOption] = useState({
+  const handleStateChange = (index, field, value) => {
+    const updatedDocuments = [...documents];
+    updatedDocuments[index][field] = value;
+  
+    // If file is uploaded, set the "uploaded" flag
+    if (field === "file") {
+      updatedDocuments[index]["uploaded"] = true;
+    }
+  
+    setDocuments(updatedDocuments);
+  };
+  
+  const [stepperactive, setStepperactive] = useState(1);
+
+  const handleNext = () => {
+    setStepperactive((prev) => (prev < 5 ? prev + 1 : prev));
+  };
+
+  const handleBack = () => {
+    setStepperactive((prev) => (prev > 1 ? prev - 1 : prev));
+  };
+
+  const [addessschecked, setAddressChecked] = useState(false);
+  const [agreementchecked, setAgreementchecked] = useState(false);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [selectedState, setSelectedState] = useState("");
+   const [selectedOption, setSelectedOption] = useState({
     accident: "",
     breaks: "",
     care: "",
     backpain: "",
   });
+
+  // Fetch states when component mounts (you can replace 'IN' with any country code)
+  useEffect(() => {
+    const countryStates = State.getStatesOfCountry("IN"); // 'IN' for India
+    setStates(countryStates);
+  }, []);
+
+  const [documents, setDocuments] = useState([
+    { fileName: "", file: null },
+    { filePath: "", file: null },
+    { file: "", file: null },
+
+    // Initial structure of a document
+  ]);
+
+  const handleAddDocument = () => {
+    setDocuments([...documents, { fileName: "", file: null, uploaded: false }]);
+  };
+  
+
+  const handleFileChange = (index, file) => {
+    const updatedDocuments = [...documents];
+    updatedDocuments[index].file = file;
+    setDocuments(updatedDocuments);
+  };
+
+  const handleInputChange = (index, field, value) => {
+    const updatedDocuments = [...documents];
+    updatedDocuments[index][field] = value;
+    setDocuments(updatedDocuments);
+  };
+
+  const uploaddocument = async (index) => {
+    console.log("index", index);
+
+    const document = documents[index];
+    if (!document.fileName || !document.file) {
+      alert("Please provide both file name and file before uploading.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", document.file);
+
+    console.log("formData", formData);
+    try {
+      console.log("formData", formData);
+      Axios.post(
+        import.meta.env.VITE_API_URL + "profile/userHealthReportUpload",
+        {
+          file: [document.file],
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("JWTtoken"),
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      ).then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        let updatedDocuments = [...documents];
+        updatedDocuments[index] = {
+          ...updatedDocuments[index],
+          filePath: data.filePath,
+        };
+        setDocuments(updatedDocuments);
+        handleStateChange(index, "uploaded", true);
+
+      });
+    } catch (error) {
+      console.error("Error uploading document: ", error);
+      alert("Failed to upload document.");
+    }
+  };
 
   const [branchList, setBranchList] = useState([]);
 
@@ -553,12 +521,14 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
   const submitForm = () => {
     let updatedHealthProblem = [];
 
-    // console.log("uploadDocuments line ------------- 557", uploadDocuments);
     conditions.forEach((element) => {
       if (element.checked === 1) {
         updatedHealthProblem.push(element.value);
       }
     });
+
+    
+
     setLoading(true);
     const Dob = datePickerToMyFormat(inputs.dob);
 
@@ -579,7 +549,6 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
           refAdState2: State.getStateByCode(inputs.tempstate).name,
           refAdPincode2: parseInt(inputs.tempincode),
         },
-        MedicalDocuments: { uploadDocuments },
         personalData: {
           ref_su_fname: inputs.fname,
           ref_su_lname: inputs.lname,
@@ -593,7 +562,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
           ref_su_qulify: inputs.qualification,
           ref_su_occu: inputs.occupation,
           ref_su_guardian: inputs.caretakername,
-          ref_su_timing: parseInt(inputs.preferabletiming),
+          ref_su_timing: inputs.preferabletiming,
           ref_su_branchId: parseInt(inputs.branch),
           ref_su_seTId: parseInt(inputs.memberlist),
           ref_su_prTimeId: parseInt(inputs.preferabletiming),
@@ -970,7 +939,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                         ${
                           inputs.maritalstatus === "married"
                             ? ""
-                            : "text-[#79879b]"
+                            : "text-[#8e98ab]"
                         }`}
                     >
                       &nbsp; Anniversary Date *
@@ -980,7 +949,9 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       label="Anniversary Date"
                       className={`relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput ${
                         inputs.maritalstatus === "married"
+                         
                           ? ""
+                         
                           : "cursor-not-allowed"
                       }`}
                       // className="relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput"
@@ -1137,7 +1108,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                             name="perstate"
                             required
                             value={inputs.perstate}
-                            onChange={handleStateChange}
+                            onChange={handleStateoption}
                             className="relative w-full h-10 px-3 transition-all bg-white border-2 rounded outline-none appearance-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white focus:border-[#ff5001] focus:focus-visible:outline-none disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
                           >
                             <option value="" disabled selected></option>
@@ -1149,7 +1120,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                           </select>
                           <label
                             htmlFor="permanentstate"
-                            className="pointer-events-none absolute left-2 z-[1] -top-2 px-2 text-[14px] text-[#ff5001] transition-all before:absolute before:left-0 before:z-[-1] before:block before:h-full before:w-full before:bg-white before:transition-all peer-required:after:text-[#000000] peer-valid:text-[14px] peer-focus:text-[14px] peer-focus:text-[#ff5001] peer-disabled:cursor-not-allowed peer-disabled:text-slate-400 peer-disabled:before:bg-transparent"
+                            className="pointer-events-none absolute left-2 z-[1] -top-2 px-2 text-[14px] text-[#ff5001] transition-all before:absolute before:left-0 before:z-[-1] before:block before:h-full before:w-full before:bg-white before:transition-all peer-required:after:text-[#000000] peer-valid:text-[14px] peer-focus:text-[14px] peer-focus:text-[#ff5001] 
+                            peer-disabled:cursor-not-allowed peer-disabled:text-slate-400 peer-disabled:before:bg-transparent"
                           >
                             State *
                           </label>
@@ -1905,153 +1877,139 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
             </form>
           </>
         )}
-
         {stepperactive === 4 && (
           <>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                setStepperactive((prev) => (prev < 5 ? prev + 1 : prev));
+                console.log(documents);
+                
+                // Placeholder for form submission logic
               }}
             >
               <div className="w-full h-[7vh] flex justify-center items-center">
                 <div className="w-[90%] justify-between flex h-[7vh] items-center">
                   <h1 className="text-[20px] justify-center font-semibold text-[#ff5001]">
-                    Medical Documents Upload
+                    Past or Present Health Problems
                   </h1>
-                  <div onClick={() => closeregistration()}>
+                  <div
+                    onClick={() => {
+                      console.log("Close registration clicked");
+                    }}
+                  >
                     <i className="fa-solid fa-xmark text-[20px] cursor-pointer"></i>
                   </div>
                 </div>
               </div>
               <hr />
-              <div className="w-full h-[73vh] overflow-auto ">
-                <div className="w-[90%] flex flex-wrap my-4 items-center justify-end gap-x- lg:gap-x-10 gap-y-4">
-                  <button
-                    type="button"
-                    className="py-2 px-4 bg-[#f95005] text-white rounded hover:bg-[#f95005]"
-                    onClick={handleAddDocument}
-                  >
-                    Add Document
-                  </button>
-                </div>
-                {uploadDocuments.map((document, index) => (
-                  <div
-                    key={index}
-                    className="w-[100%] flex flex-row justify-evenly lg:p-[10px] mt-5 lg:mt-0"
-                  >
-                    <div>
-                      {document.refMedDocUpload && (
-                        <div className="pt-5 align-content-start">
-                          <FaEye
-                            className="w-[30px] h-[25px] text-[#f95005] cursor-pointer"
-                            onClick={() => handlePreviewDocument(index)}
-                          />
-                        </div>
-                      )}
-                    </div>
 
-                    <div className="mb-4 w-[40%] flex flex-col justify-start text-start">
-                      <label className="block text-gray-700 font-medium mb-2">
-                        Enter File Name:
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter a name for the file"
-                        className="w-full border border-gray-300 rounded px-4 py-2"
-                        value={document.refMedDocName || ""}
-                        onChange={(e) => {
-                          setUploadDocuments((prev) => {
-                            const updatedDocuments = [...prev];
-                            updatedDocuments[index].refMedDocName =
-                              e.target.value;
-                            return updatedDocuments;
-                          });
-                        }}
-                        required
-                      />
-                    </div>
-                    <div className="mb-4 w-[40%] flex flex-col justify-start text-start">
-                      <label className="block text-gray-700 font-medium mb-2">
-                        Upload File:
-                      </label>
-                      <input
-                        type="file"
-                        accept="application/pdf,image/*"
-                        className="w-full border border-gray-300 rounded px-4 py-2 uploadfile disabled:cursor-not-allowed disabled:text-slate-400 disabled:before:bg-transparent"
-                        disabled={document.refMedDocUpload}
-                        onChange={(e) => {
-                          const file = e.target.files[0];
-                          if (file) {
-                            const formData = new FormData();
-                            formData.append("file", file);
-                            setUploadDocuments((prev) => {
-                              const updatedDocuments = [...prev];
-                              updatedDocuments[index].refMedDocFile = formData;
-                              updatedDocuments[index].refMedDocUpBtn = true;
-                              return updatedDocuments;
-                            });
-                          }
-                        }}
-                        required
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      className={`text-[green] disabled:cursor-not-allowed disabled:text-slate-400 disabled:before:bg-transparent`}
-                      onClick={() => storeDocument(index)}
-                      disabled={
-                        document.refMedDocUpload === true ||
-                        document.refMedDocUpBtn === false
-                      }
-                    >
-                      <ImUpload2 className="w-[30px] h-[25px]" />
-                    </button>
+              <div className="w-full h-[73vh] overflow-auto">
+  <div className="w-[90%] flex flex-wrap my-4 items-center justify-end gap-x- lg:gap-x-10 gap-y-4">
+    <button
+      type="button"
+      onClick={handleAddDocument}
+      className="py-2 px-4 bg-[#f95005] text-white rounded hover:bg-[#f95005]"
+    >
+      Add Document
+    </button>
+  </div>
 
-                    {/* Delete Button */}
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveDocument(index)}
-                      className="text-[red]"
-                    >
-                      <MdDelete className="w-[30px] h-[30px]" />
-                    </button>
-                  </div>
-                ))}
-              </div>
+  {/* Conditionally Render Documents */}
+{documents.length > 0 &&
+  documents.map((doc, index) => (
+    <div key={index} className="w-[100%] flex flex-row justify-evenly lg:p-[10px] mt-5 lg:mt-0">
+      <div className="pt-5">
+        <FaEye
+          className="w-[30px] h-[25px] text-[#f95005] cursor-pointer"
+          onClick={() => handlePreviewDocument(index)}
+        />
+      </div>
+
+      {/* File Name Input */}
+      <div className="mb-4 w-[40%] flex flex-col justify-start text-start">
+        <label htmlFor={`fileName-${index}`} className="block text-gray-700 font-medium mb-2">
+          Enter File Name:
+        </label>
+        <input
+          type="text"
+          id={`fileName-${index}`}
+          name={`fileName-${index}`}
+          placeholder="Enter a name for the file"
+          className="w-full border border-gray-300 rounded px-4 py-2"
+          value={doc.fileName || ""}
+          onChange={(e) => handleStateChange(index, "fileName", e.target.value)}
+          required
+        />
+      </div>
+
+      {/* File Upload Input */}
+      <div className="mb-4 w-[40%] flex flex-col justify-start text-start">
+        <label htmlFor={`fileInput-${index}`} className="block text-gray-700 font-medium mb-2">
+          Upload File:
+        </label>
+        <input
+          type="file"
+          id={`fileInput-${index}`}
+          name={`file-${index}`}
+          accept="application/pdf,image/*"
+          className="w-full border border-gray-300 rounded px-4 py-2 uploadfile"
+          disabled={doc.uploaded} // Disable if uploaded
+          onChange={(e) => {
+            handleStateChange(index, "file", e.target.files[0]);
+          }}
+          required
+        />
+      </div>
+
+      {/* Upload Icon */}
+      <button
+        type="button"
+        className={`text-[green] ${doc.uploaded ? "opacity-50 cursor-not-allowed" : ""}`}
+        onClick={() => uploaddocument(index)}
+        disabled={doc.uploaded} // Disable the button if uploaded
+      >
+        <ImUpload2 className="w-[30px] h-[25px]" />
+      </button>
+
+      {/* Delete Button */}
+      <button
+        type="button"
+        onClick={() => {
+          const updatedDocuments = documents.filter((_, idx) => idx !== index);
+          setDocuments(updatedDocuments);
+        }}
+        className="text-[red]"
+      >
+        <MdDelete className="w-[30px] h-[30px]" />
+      </button>
+    </div>
+  ))}
+
+</div>
+
               <hr />
               <div className="w-[90%] lg:w-[95%] h-[10vh] flex justify-between items-center">
-                {loading ? (
-                  <div className="flex w-full justify-end items-end">
-                    <svg className="loadersvg my-4" viewBox="25 25 50 50">
-                      <circle
-                        className="loadercircle"
-                        r="20"
-                        cy="50"
-                        cx="50"
-                      ></circle>
-                    </svg>
-                  </div>
-                ) : (
-                  <>
-                    <button
-                      className="bg-[#ff5001] border-2 border-[#ff5001] text-[#fff] font-semibold px-3 py-2 rounded my-4 transition-colors duration-300 ease-in-out hover:bg-[#fff] hover:text-[#ff5001]"
-                      type="button"
-                      onClick={handleBack}
-                    >
-                      <i className="fa-solid fa-arrow-left"></i>
-                      &nbsp;&nbsp;Back
-                    </button>
-                    <button
-                      type="submit"
-                      className="disabled:bg-[#ff7a3c] disabled:font-[#fff] disabled:hover:cursor-not-allowed disabled:hover:text-[#fff] disabled:border-[#ff7a3c] bg-[#ff5001] border-2 border-[#ff5001] text-[#fff] font-semibold px-3 py-2 rounded transition-colors duration-300 ease-in-out hover:bg-[#fff] hover:text-[#ff5001]"
-                    >
-                      Next&nbsp;&nbsp;
-                      <i className="fa-solid fa-check"></i>
-                    </button>
-                  </>
-                )}
-              </div>
+  {/* Back Button */}
+  <button
+    type="button"
+    className="bg-[#ff5001] border-2 border-[#ff5001] text-[#fff] font-semibold px-3 py-2 rounded my-4 transition-colors duration-300 ease-in-out hover:bg-[#fff] hover:text-[#ff5001]"
+    onClick={handleBack} // Ensure this function navigates or updates state correctly
+  >
+    <i className="fa-solid fa-arrow-left"></i>
+    &nbsp;&nbsp;Back
+  </button>
+
+  {/* Next Button */}
+  <button
+    type="button" // Change to "button" to avoid triggering form submission if not required
+    className="disabled:bg-[#ff7a3c] disabled:font-[#fff] disabled:hover:cursor-not-allowed disabled:hover:text-[#fff] disabled:border-[#ff7a3c] bg-[#ff5001] border-2 border-[#ff5001] text-[#fff] font-semibold px-3 py-2 rounded transition-colors duration-300 ease-in-out hover:bg-[#fff] hover:text-[#ff5001]"
+    onClick={handleNext} // Uncomment and verify this handler's functionality
+  >
+    Next&nbsp;&nbsp;
+    <i className="fa-solid fa-arrow-right"></i>
+  </button>
+</div>
+
             </form>
           </>
         )}

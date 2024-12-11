@@ -158,7 +158,7 @@
   box-shadow: none;
   border-color: none !important;
 }
-.p-fileupload.p-fileupload-advanced.p-component{
+.p-fileupload.p-fileupload-advanced.p-component {
   width: 60%;
 }
 [data-pc-section="details"] {
@@ -166,12 +166,11 @@
   width: 100%;
   gap: 10px;
 }
-.p-fileupload-file-badge.p-badge.p-component.p-badge-warning{
+.p-fileupload-file-badge.p-badge.p-component.p-badge-warning {
   margin-top: 0%;
 }
 
-.uploadfile::file-selector-button
-{
+.uploadfile::file-selector-button {
   border: none;
   background-color: #f95005;
   color: white;
@@ -179,5 +178,15 @@
   border-radius: 6px;
   padding-left: 1rem;
   padding-right: 1rem;
+}
 
+.documentView {
+  z-index: 999;
+  background-color: red;
+  width: 70vw;
+  height: 80vh;
+}
+
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
+  background-color: #f95005 !important ;
 }
