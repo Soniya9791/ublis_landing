@@ -320,20 +320,25 @@ export default function Header() {
                         {logindetails.username}
                       </span>
                     </li>
-                  
-                    <li
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => {
-                        handleNavigate("/Landingprofile"); 
-                      }}
-                    >
-                      Profile
-                    </li>
+                    {!useStatus.followUpCount ? (
+                      <li
+                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => {
+                          handleNavigate("/Landingprofile");
+                        }}
+                      >
+                        Profile
+                      </li>
+                    ) : (
+                      <></>
+                    )}
+
                     <li
                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                       onClick={() => {
                         localStorage.removeItem("JWTtoken");
                         setIsDropdownOpen(false);
+                        handleNavigate("/");
                       }}
                     >
                       Sign Out

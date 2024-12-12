@@ -140,51 +140,51 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
   ]);
 
   const handleRemoveDocument = (index) => {
-    console.log("uploadDocuments[index].refMedDocPath",uploadDocuments[index].refMedDocPath);
-    if(uploadDocuments[index].refMedDocPath=="")
-    {
+    console.log(
+      "uploadDocuments[index].refMedDocPath",
+      uploadDocuments[index].refMedDocPath
+    );
+    if (uploadDocuments[index].refMedDocPath == "") {
       setUploadDocuments((prev) => prev.filter((_, idx) => idx !== index));
-    }
-    else{
+    } else {
       try {
-      Axios.post(
-        import.meta.env.VITE_API_URL + "profile/deleteMedicalDocument",
-        { filePath: uploadDocuments[index].refMedDocPath },
-        {
-          headers: {
-            Authorization: localStorage.getItem("JWTtoken"),
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((res) => {
-          console.log(res, "res");
-      
-          const data = decrypt(
-            res.data[1],
-            res.data[0],
-            import.meta.env.VITE_ENCRYPTION_KEY
-          );
-          console.log("data", data);
-      
-          if (data.success) {
-            console.log("Success delete")
-            alert("success")
-            setUploadDocuments((prev) => prev.filter((_, idx) => idx !== index));
+        Axios.post(
+          import.meta.env.VITE_API_URL + "profile/deleteMedicalDocument",
+          { filePath: uploadDocuments[index].refMedDocPath },
+          {
+            headers: {
+              Authorization: localStorage.getItem("JWTtoken"),
+              "Content-Type": "application/json",
+            },
           }
-        })
-        .catch((err) => {
-          console.error("Error Deleting the File:", err);
-        });
-      
-    } catch (error) {
-      console.error("Error in Delete Document:", error);
+        )
+          .then((res) => {
+            console.log(res, "res");
+
+            const data = decrypt(
+              res.data[1],
+              res.data[0],
+              import.meta.env.VITE_ENCRYPTION_KEY
+            );
+            console.log("data", data);
+
+            if (data.success) {
+              console.log("Success delete");
+              alert("success");
+              setUploadDocuments((prev) =>
+                prev.filter((_, idx) => idx !== index)
+              );
+            }
+          })
+          .catch((err) => {
+            console.error("Error Deleting the File:", err);
+          });
+      } catch (error) {
+        console.error("Error in Delete Document:", error);
+      }
     }
-    }
-  
   };
 
-  
   const handlePreviewDocument = (index) => {
     const file = uploadDocuments[index].refMedDocFile;
     if (file) {
@@ -266,8 +266,6 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
       },
     ]);
   };
-
-
 
   // Fetch states when component mounts (you can replace 'IN' with any country code)
   useEffect(() => {
@@ -494,7 +492,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
         import.meta.env.VITE_API_URL + "profile/sectionTime",
         {
           sectionId: parseInt(value),
-          branch:parseInt(inputs.branch)
+          branch: parseInt(inputs.branch),
         },
         {
           headers: {
@@ -1890,7 +1888,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       <TextInput
                         id="painValue"
                         name="painscaleValue"
-                        label="Additional Points(Back Pain)"
+                        label="Additional Content (Back Pain)"
                         disabled={
                           selectedOption.backpain === "yes" ? false : true
                         }
