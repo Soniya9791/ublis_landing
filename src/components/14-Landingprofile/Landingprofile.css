@@ -14,16 +14,14 @@
   display: flex;
 }
 
-.p-button.p-fileupload-choose.p-component{
+.p-button.p-fileupload-choose.p-component {
   background: #f95005;
-  }
-.p-fileupload.p-fileupload-advanced.p-component{
+}
+.p-fileupload.p-fileupload-advanced.p-component {
   width: 100%;
 }
 
-
-.uploadfile::file-selector-button
-{
+.uploadfile::file-selector-button {
   border: none;
   background-color: #f95005;
   color: white;
@@ -31,5 +29,12 @@
   border-radius: 6px;
   padding-left: 1rem;
   padding-right: 1rem;
+}
 
+.custom-title {
+  font-size: 18px; /* Adjust title font size */
+}
+
+.custom-popup {
+  width: 80%; /* Increase width of the popup */
 }

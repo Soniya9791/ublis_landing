@@ -397,7 +397,7 @@ export const Stepper = () => {
         {stepperactive === 1 && (
           <>
             <h1 className="pt-4 text-[#ff5001] text-[25px] font-bold">
-              Your Personal Deatils
+              Your Personal Details 
             </h1>
             <div className="w-[100%] h-[45vh] flex flex-col justify-center">
               <div className="w-[100%]" align="center">

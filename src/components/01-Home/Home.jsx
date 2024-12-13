@@ -142,7 +142,7 @@ export default function Home() {
           </h2>
           <div className="contents">
             <p className="col-lg-8 col-md-12">
-              Welcome to Ublis Yoga, the place which brings together power and
+              Welcome to Ublis Yoga, the place that brings together power and
               serenity. Walk through our teaching program, learn with our
               experienced teachers, and get started with your practice for a
               better body and mind wellbeing.{" "}
@@ -161,7 +161,7 @@ export default function Home() {
               your busy life, our instructors can get you on the right path.
             </p>
             <p className="col-lg-8 col-md-12">
-              Step inside our studio, leave behind all worries at the door, and
+              Step inside our studio, leave behind all worries at the door and
               get ready for a practice that feeds the body, soul, and spirit.
               Whatever your level is, you will find a safe, friendly community
               and environment to help you grow in your wellness journey.
@@ -201,9 +201,9 @@ export default function Home() {
                 data-aos-delay="150"
               >
                 <p className="text-[20px] text-[#000000] text-justify font-semibold cardsTest">
-                  Yoga is about bringing together the body, mind and soul as
+                  Yoga is about bringing together the body, mind ,and soul as
                   one. It’s more than just physical exercise—it helps you stay
-                  physically fit, mentally clear and emotionally balanced.
+                  physically fit, mentally clear, and emotionally balanced.
                   Through yoga, you can find a sense of inner peace and overall
                   well-being by connecting all parts of yourself.
                 </p>
@@ -252,7 +252,7 @@ export default function Home() {
                 className="mb-3 text-[30px] lg:text-[50px] text-[#f95005] font-[700] py-3"
                 align="center"
               >
-                Who We Are ?
+                Who We Are?
               </h3>
             </div>
 
@@ -265,7 +265,7 @@ export default function Home() {
                   align="center"
                 >
                   <p className="whoWeArePara cardsTest">
-                    At Ublis Yoga, we are a passionate and dedicated to creating
+                    At Ublis Yoga, we are passionate and dedicated to creating
                     a sanctuary for holistic wellness. Our studio is a place
                     where ancient wisdom meets modern practice, offering a
                     diverse range of yoga classes tailored to meet the needs of
@@ -310,7 +310,7 @@ export default function Home() {
               className="text-[30px] lg:text-[50px] text-[#f95005] font-[700] pb-1"
               align="center"
             >
-              Why Choose Us ?
+              Why Choose Us?
             </h3>
           </div>
           <img
@@ -485,7 +485,7 @@ export default function Home() {
                       <p>
                         Been practicing yoga under Deepika Mam's guidance. She
                         teaches very well and provides attention to each
-                        individuals...
+                        individual
                       </p>
                     </div>
                   </div>

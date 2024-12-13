@@ -934,15 +934,32 @@ const Landingprofile = () => {
 
         const blob = new Blob([byteArray], { type: file.contentType });
         const url = URL.createObjectURL(blob);
+        let content;
+        if (file.contentType == "application/pdf") {
+          content = `<iframe src="${url}" width="100%" height="450px" style="border: none;"></iframe>`;
+        } else {
+          content = `<img src="${url}" alt="Document Preview" style="max-width: 100%; max-height: 450px; object-fit: contain; display: block; margin: 0 auto;">`;
+        }
+        const targetDiv = document.getElementById("target-container");
 
         Swal.fire({
-          title: "Document Preview",
-          html: `<iframe src="${url}" width="100%" height="500px"></iframe>`,
+          title: "Medical Document Preview",
+          html: `
+          <div style="display: flex; justify-content:center;align-item:center;">     
+          ${content} 
+          </div>
+            <div style="margin-top: 10px; text-align: center; width: 100%; display: flex; justify-content: center;">
+              <a href="${url}" download="document.pdf" style="padding: 10px 20px; width: 80%; background-color: #f95005; color: white; text-decoration: none; border-radius: 4px; text-align: center;">
+                Download
+              </a>
+            </div>
+          `,
           showCloseButton: true,
-          focusConfirm: false,
-          confirmButtonText: "Close",
-          preConfirm: () => {
-            URL.revokeObjectURL(url);
+          showConfirmButton: false,
+          target: targetDiv,
+          customClass: {
+            title: "custom-title",
+            popup: "custom-popup",
           },
         });
       } catch (error) {

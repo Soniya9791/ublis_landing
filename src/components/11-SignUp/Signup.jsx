@@ -38,7 +38,7 @@ export default function Signup() {
             navigate("/signin");
           }}
         >
-          Already Have an Account ?
+          Already Have an Account?
         </h1>
         <h1
           className="text-[#ff5001] cursor-pointer mt-3 text-[20px] font-semibold"
