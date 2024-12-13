@@ -66,6 +66,10 @@ export const Stepper = () => {
     password: "",
     repassword: "",
   });
+  const [inputs, SetInputs] = useState({
+    username: "",
+    password: "",
+  });
 
   const [verify, setVerify] = useState(false);
   const [emailVerify, setEmailVerify] = useState(false);
@@ -543,14 +547,14 @@ export const Stepper = () => {
                         Username
                       </label>
                     </div> */}
-                    <UsernameInput
-                      id="username"
-                      name="username"
-                      label="Username"
-                      value={input.username}
+                   <UsernameInput
+                      id="email"
+                      name="email"
+                      label="Email"
+                      value={input.email}
                       onChange={handleinput}
                       required
-                      isInvalid={verify}
+                      isInvalid={emailVerify}
                     />
                   </div>
                   {/* <div className="w-[10%] flex justify-center items-center">
