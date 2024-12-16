@@ -768,7 +768,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
               <hr />
               <div className="w-full h-[73vh] overflow-y-auto">
                 <div className="w-[90%] mb-[20px] mt-3" align="start">
-                  <TextInput
+                  {/* <TextInput
                     id="userid"
                     type="text"
                     name="userid"
@@ -778,7 +778,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                     readonly
                     value={inputs.userid}
                     onChange={(e) => handleInput(e)}
-                  />
+                  /> */}
                 </div>
 
                 <div className="w-[90%] mb-[20px]" align="start">

@@ -81,6 +81,8 @@ const Landingprofile = () => {
           refStSex: inputs.gender,
           refguardian: inputs.guardianname,
           refMaritalStatus: inputs.maritalstatus,
+          refDeliveryType:inputs.deliveryType,
+          refKidsCount: inputs.kidsCount,
           refWeddingDate: inputs.anniversarydate
             ? inputs.anniversarydate
             : null,
@@ -157,7 +159,9 @@ const Landingprofile = () => {
     gender: "",
     guardianname: "",
     maritalstatus: "",
+    deliveryType:"",
     anniversarydate: "",
+    kidsCount:"",
     qualification: "",
     occupation: "",
     peraddress: "",
@@ -170,7 +174,9 @@ const Landingprofile = () => {
     tempcity: "",
     email: "",
     phoneno: "",
+    emgContaxt: "",
     whatsappno: "",
+    BackPainValue: "",
     mode: "",
     height: "",
     weight: "",
@@ -464,6 +470,8 @@ const Landingprofile = () => {
           age: personalData.refStAge,
           gender: personalData.refStSex,
           maritalstatus: personalData.refMaritalStatus,
+          deliveryType: personalData.refDeliveryType,
+          kidsCount: personalData.refKidsCount,
           anniversarydate: personalData.refWeddingDate,
           guardianname: personalData.refguardian,
           qualification: personalData.refQualification,
@@ -486,6 +494,7 @@ const Landingprofile = () => {
             : addressData.refAdCity2,
           email: communication.refCtEmail,
           phoneno: communication.refCtMobile,
+          emgContaxt:communication.refEmerContact,
           whatsappno: communication.refCtWhatsapp,
           mode: communication.refUcPreference,
           height: generalHealth ? generalHealth.refHeight : null,
@@ -508,6 +517,8 @@ const Landingprofile = () => {
           caredoctorname: presentHealth ? presentHealth.refDoctor : null,
           caredoctorhospital: presentHealth ? presentHealth.refHospital : null,
           backpainscale: presentHealth ? presentHealth.refBackPain : null,
+          BackPainValue: presentHealth ? presentHealth.refBackPainValue : null,
+
           therapydurationproblem: presentHealth
             ? presentHealth.refProblem
             : null,
@@ -557,6 +568,7 @@ const Landingprofile = () => {
       {
         presentHealth: {
           refBackpain: inputs.backpainscale,
+          refBackPainValue:inputs.BackPainValue,
           refDrName: inputs.caredoctorname,
           refHospital: inputs.caredoctorhospital,
           refMedicalDetails: inputs.pastmedicaldetails,
@@ -598,6 +610,186 @@ const Landingprofile = () => {
       });
   };
 
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+
+    let updatedInputs = {
+      ...inputs,
+      [name]: value,
+    };
+
+    // If the "addressboth" flag is true, copy the permanent address fields to temporary fields
+    if (updatedInputs.addressboth) {
+      updatedInputs = {
+        ...updatedInputs,
+        tempaddess: updatedInputs.peraddress,
+        tempstate: updatedInputs.perstate,
+        tempincode: updatedInputs.perpincode,
+        tempcity: updatedInputs.percity,
+      };
+    }
+
+    if (name === "branch") {
+      Axios.post(
+        import.meta.env.VITE_API_URL + "profile/MemberList",
+        {
+          branchId: value,
+          refAge: inputs.age,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("JWTtoken"),
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((res) => {
+          const data = decrypt(
+            res.data[1],
+            res.data[0],
+            import.meta.env.VITE_ENCRYPTION_KEY
+          );
+          if (data.token == false) {
+            navigate("/expired");
+          }
+          setMemberList(data.data); // Make sure this updates memberList
+          setpreferTiming([]);
+          setSessionType([]);
+          // setInputs({
+          //   ...inputs,
+          //   preferabletiming: "",
+          //   sessiontype: "",
+          // });
+        })
+        .catch((err) => {
+          // Catching any 400 status or general errors
+          console.error("Error: ", err);
+        });
+    } else if (name === "memberlist") {
+      Axios.post(
+        import.meta.env.VITE_API_URL + "profile/sectionTime",
+        {
+          sectionId: parseInt(value),
+          branch: parseInt(inputs.branch),
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("JWTtoken"),
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((res) => {
+          const data = decrypt(
+            res.data[1],
+            res.data[0],
+            import.meta.env.VITE_ENCRYPTION_KEY
+          );
+          if (data.token == false) {
+            navigate("/expired");
+          }
+          console.log("Member List -----------", data);
+          setpreferTiming(data.SectionTime);
+          setSessionType(data.CustTime);
+        })
+        .catch((err) => {
+          // Catching any 400 status or general errors
+          console.error("Error: ", err);
+        });
+    } else if (name === "maritalstatus") {
+      if (value === "single") {
+        updatedInputs = {
+          ...updatedInputs,
+          anniversarydate: "",
+        };
+      }
+    } else if (name === "dob") {
+      updatedInputs = {
+        ...updatedInputs,
+        age: calculateAge(value),
+      };
+    } else if (name === "height") {
+      const bmi = calculateBMI(inputs.weight, value);
+      updatedInputs = {
+        ...updatedInputs,
+        bmi: bmi,
+      };
+    } else if (name === "weight") {
+      const bmi = calculateBMI(value, inputs.height);
+      updatedInputs = {
+        ...updatedInputs,
+        bmi: bmi,
+      };
+    }
+    if (name === "kidsCount") {
+      if (value === 1) {
+        updatedInputs = {
+          ...updatedInputs,
+          kidsCount: "",
+        };
+      }
+    }
+
+    console.log('updatedInputs', updatedInputs)
+    setInputs(updatedInputs);
+
+    console.log('inputs ------------- line 727', inputs)
+  };
+  const handlecommunicationtype = ()=>{
+   
+  
+    Axios.post(
+      import.meta.env.VITE_API_URL + "user/updateProfile",
+      {
+        communication: {
+          refCtEmail: inputs.email,
+          refCtMobile: inputs.phoneno,
+          refEmerContact:inputs.emgContaxt,
+          refCtWhatsapp: inputs.whatsappno,
+          refUcPreference: inputs.mode,
+        },
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("JWTtoken") || "",
+          "Content-Type": "application/json", // Ensure the content type is set
+        },
+      }
+    )
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+  
+        if (data.token === false) {
+          navigate("/expired");
+        } else {
+          localStorage.setItem("JWTtoken", `Bearer ${data.token}`);
+  
+          console.log(data.success);
+  
+          if (data.success) {
+            setEdits({
+              ...edits,
+              communitcation: false,
+            });
+          }
+        }
+      })
+      .catch((err) => {
+        // Catching any 400 status or general errors
+        console.error("Error: ", err);
+      });
+  };
+    const [selectedOption, setSelectedOption] = useState({
+      accident: "",
+      breaks: "",
+      care: "",
+      backpain: "",
+    });
+  
   const handlesubmitaddress = () => {
     Axios.post(
       import.meta.env.VITE_API_URL + "user/updateProfile",
@@ -714,6 +906,7 @@ const Landingprofile = () => {
       {
         presentHealth: {
           refBackpain: inputs.backpainscale,
+          refBackPainValue:inputs.BackPainValue,
           refDrName: inputs.caredoctorname,
           refHospital: inputs.caredoctorhospital,
           refMedicalDetails: inputs.pastmedicaldetails,
@@ -1300,7 +1493,7 @@ const Landingprofile = () => {
                           type="text"
                           onChange={handleInputVal}
                           value={inputs.guardianname}
-                          readonly={!edits.personal}
+                          disabled={!edits.personal}
                           required
                         />
                       </div>
@@ -1319,8 +1512,9 @@ const Landingprofile = () => {
                             { value: "married", label: "Married" },
                           ]}
                           disabled={
-                            !edits.personal && inputs.age > "18" ? false : true
+                            edits.personal && inputs.age > "18" ? false : true
                           }
+                          readonly
                           required
                         />
                       </div>
@@ -1334,20 +1528,65 @@ const Landingprofile = () => {
                           disabled={
                             inputs.maritalstatus === "married" ? false : true
                           }
-                          readonly={!edits.personal}
+                          readonly
                           value={inputs.anniversarydate}
                           required
                         />
                       </div>
                     </div>
 
-                    <div className="w-[100%] flex justify-between">
+                    <div className="w-[100%] flex flex-col md:flex-row gap-y-[20px] justify-between mb-[20px]">
+                    <div className="w-[100%] md:w-[48%] lg:w-[48%]">
+                    <TextInput
+                      id="kidsCount"
+                      name="kidsCount"
+                      label="No of Kid's *"
+                      type="number"
+                      required
+                      readonly
+                      disabled={
+                        (inputs.maritalstatus === "married" ? false : true) ||
+                        (inputs.gender === "female" ? false : true)
+                      }
+                      value={inputs.kidsCount}
+                      onChange={(e) => handleInput(e)}
+                    />
+                      
+                      </div>
+                      <div className="w-[48%]">
+                    <SelectInput
+                      id="deliveryType"
+                      name="deliveryType"
+                      placeholder="22"
+                      label="Delivery Type *"
+                    
+                      options={[
+                        { value: "Normal", label: "Normal" },
+                        { value: "C-Section", label: "C-Section" },
+                      ]}
+                   
+                      required
+                      disabled={
+                        (inputs.maritalstatus === "married" ? false : true) ||
+                        (inputs.gender === "female" ? false : true)||
+                        (inputs.kidsCount >0 ? false : true ) ||
+                        (!edits.personal )
+                      }
+                      value={inputs.deliveryType}
+                      
+                      onChange={(e) => handleInput(e) }
+                    />
+                  </div>
+                      </div>
+                    
+
+                    <div className="w-[100%] flex flex-row justify-between ">
                       <div
                         className={
                           localStorage.getItem("refUtId") === "5" ||
                           localStorage.getItem("refUtId") === "6"
                             ? "w-[48%]"
-                            : "w-[100%]"
+                            : "w-[48%]"
                         }
                       >
                         <TextInput
@@ -1362,10 +1601,16 @@ const Landingprofile = () => {
                           required
                         />
                       </div>
+                      
+                      
 
-                      {localStorage.getItem("refUtId") === "5" ||
-                      localStorage.getItem("refUtId") === "6" ? (
-                        <div className="w-[48%]">
+                      <div className={
+                          localStorage.getItem("refUtId") === "5" ||
+                          localStorage.getItem("refUtId") === "6"
+                            ? "w-[48%]"
+                            : "w-[48%]"
+                        }>
+                        <div className="w-[100%]">
                           <TextInput
                             label="Occupation *"
                             name="occupation"
@@ -1378,15 +1623,145 @@ const Landingprofile = () => {
                             required
                           />
                         </div>
-                      ) : (
-                        <></>
-                      )}
+                        </div>
+                     
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </form>
+
+                      {/* Communication Type */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handlecommunicationtype();
+              }}
+            >
+              <div className="basicProfileCont m-[10px] lg:m-[30px] p-[20px] lg:p-[40px] shadow-lg">
+                <div className="w-[100%] flex justify-between items-center mb-5">
+                  <div className="text-[1rem] lg:text-[25px] font-bold">
+                    Communication Type
+                  </div>
+                  {edits.communitcation ? (
+                    <button
+                      className="text-[15px] outline-none py-2 border-none px-3 bg-[#f95005] font-bold cursor-pointer text-white rounded"
+                      type="submit"
+                    >
+                      Save&nbsp;&nbsp;
+                      <i className="text-[15px] pi pi-check"></i>
+                    </button>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        editform("communitcation");
+                      }}
+                      className="text-[15px] py-2 px-3 bg-[#f95005] font-bold cursor-pointer text-[#fff] rounded"
+                    >
+                      Edit&nbsp;&nbsp;
+                      <i className="text-[15px] pi pi-pen-to-square"></i>
+                    </div>
+                  )}
+                </div>
+                <div className="w-[100%] flex flex-col justify-center items-center">
+                  <div className="w-[100%] flex justify-between mb-[20px]">
+                    <div className="w-[48%]">
+                      <TextInput
+                        label="E-Mail *"
+                        name="email"
+                        id="email"
+                        type="email"
+                        onChange={handleInputVal}
+                        value={inputs.email}
+                        readonly={!edits.communitcation}
+                        required
+                      />
+                    </div>
+                    <div className="w-[48%]">
+    
+
+                    <TextInput
+                      id="emergencyno"
+                      type="number"
+                      name="emgContaxt"
+                      placeholder="your name"
+                      label="Emergency Contact Number *"
+                      required
+                      value={inputs.emgContaxt}
+                      readonly={!edits.communitcation}
+                      onChange={(e) => handleInput(e)}
+                    />
+                  </div>
+                  </div>
+                  <div className="w-[100%] flex flex-col lg:flex-row gap-y-[20px] justify-between mb-[20px]">
+                    <div className="w-[100%] lg:w-[40%]">
+                      <TextInput
+                        label="Phone Number *"
+                        name="phoneno"
+                        id="phoneno"
+                        type="number"
+                        onChange={handleInputVal}
+                        value={inputs.phoneno}
+                        readonly={!edits.communitcation}
+                        required
+                      />
+                    </div>
+                    <div className="w-[100%] lg:w-[56%] flex justify-between">
+                      <div className="w-[65%] lg:w-[75%]">
+                        <TextInput
+                          label="WhatsApp Number *"
+                          name="whatsappno"
+                          id="whatsappno"
+                          type="number"
+                          onChange={handleInputVal}
+                          value={inputs.whatsappno}
+                          readonly={!edits.communitcation}
+                          required
+                        />
+                      </div>
+                      <div
+                        className="w-[30%] lg:w-[18%] text-[0.7rem] lg:text-[14px] flex justify-center items-center text-center bg-[#f95005] font-bold cursor-pointer text-[#fff] rounded"
+                        onClick={() => {
+                          if (edits.communitcation) {
+                            setInputs({
+                              ...inputs,
+                              whatsappno: inputs.phoneno,
+                            });
+                          } else {
+                            console.log("Edit Disabled");
+                          }
+                        }}
+                      >
+                        Use Same Number
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* <div className="w-[100%] ">
+                    <SelectInput
+                      id="modeofcontact"
+                      name="mode"
+                      label="Mode of Contact *"
+                      value={inputs.mode}
+                      onChange={handleInputVal}
+                      options={
+                        modeofcontact
+                          ? Object.entries(modeofcontact).map(
+                              ([value, label]) => ({
+                                value, // The key as value
+                                label, // The value as label
+                              })
+                            )
+                          : [] // Empty array before the data is loaded
+                      }
+                      disabled={!edits.communitcation}
+                      required
+                    />
+                  </div> */}
+                </div>
+              </div>
+            </form>
 
           {/* Address */}
           <form
@@ -1981,7 +2356,7 @@ const Landingprofile = () => {
                       </div>
                     </div>
                     <div className="w-[100%] lg:w-[48%]">
-                      <label className="w-[100%] text-[#f95005] font-bold text-[1rem] lg:text-[20px] text-start">
+                    <label className="w-[100%] text-[#f95005] font-bold text-[1rem] lg:text-[20px] text-start">
                         Back Pain *
                       </label>
                       <div className="w-[100%] flex justify-start mt-[10px]">
@@ -2021,8 +2396,8 @@ const Landingprofile = () => {
                         </div>
                       </div>
 
-                      <div className="w-[100%] mt-[20px]">
-                        <div className="w-[100%]">
+                      <div className="w-[100%] flex justify-between mt-[20px]">
+                        <div className="w-[48%]">
                           <SelectInput
                             id="painscale"
                             name="backpainscale"
@@ -2038,9 +2413,24 @@ const Landingprofile = () => {
                             required
                           />
                         </div>
-                      </div>
+                        <div div className="w-[48%]">
+                      <TextInput
+                        id="BackPainValue"
+                        name="BackPainValue"
+                        label="Additional Content (Back Pain)"
+                        disabled={!options.backpain || !edits.present}
+                        required
+                        value={inputs.BackPainValue}
+                        onChange={(e) => handleInput(e)}
+                      />
                     </div>
-                  </div>
+                      </div>
+                      </div>
+                     
+                      
+                    </div>
+                  
+                  
                 </div>
               </div>
             </div>
