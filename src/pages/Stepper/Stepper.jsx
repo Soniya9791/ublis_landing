@@ -547,7 +547,7 @@ export const Stepper = () => {
                         Username
                       </label>
                     </div> */}
-                   <UsernameInput
+                   {/* <UsernameInput
                       id="email"
                       name="email"
                       label="Email"
@@ -555,6 +555,15 @@ export const Stepper = () => {
                       onChange={handleinput}
                       required
                       isInvalid={emailVerify}
+                    /> */}
+                    <UsernameInput
+                      id="username"
+                      name="username"
+                      label="Username"
+                      value={input.username}
+                      onChange={handleinput}
+                      required
+                      isInvalid={verify}
                     />
                   </div>
                   {/* <div className="w-[10%] flex justify-center items-center">
