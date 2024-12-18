@@ -81,7 +81,7 @@ const Landingprofile = () => {
           refStSex: inputs.gender,
           refguardian: inputs.guardianname,
           refMaritalStatus: inputs.maritalstatus,
-          refDeliveryType:inputs.deliveryType,
+          refDeliveryType: inputs.deliveryType,
           refKidsCount: inputs.kidsCount,
           refWeddingDate: inputs.anniversarydate
             ? inputs.anniversarydate
@@ -159,15 +159,19 @@ const Landingprofile = () => {
     gender: "",
     guardianname: "",
     maritalstatus: "",
-    deliveryType:"",
+    deliveryType: "",
     anniversarydate: "",
-    kidsCount:"",
+    kidsCount: "",
     qualification: "",
     occupation: "",
+    perdoorno: "",
+    perstreetname: "",
     peraddress: "",
     perpincode: "",
     perstate: "",
     percity: "",
+    tempdoorno: "",
+    tempstreetname: "",
     tempaddress: "",
     temppincode: "",
     tempstate: "",
@@ -301,6 +305,8 @@ const Landingprofile = () => {
       };
 
       if (options.address) {
+        updatedInputs.tempdoorno = prevInputs.perdoorno;
+        updatedInputs.tempstreetname = prevInputs.perstreetname;
         updatedInputs.tempaddress = prevInputs.peraddress;
         updatedInputs.temppincode = prevInputs.perpincode;
         updatedInputs.tempcity = prevInputs.percity;
@@ -476,10 +482,18 @@ const Landingprofile = () => {
           guardianname: personalData.refguardian,
           qualification: personalData.refQualification,
           occupation: personalData.refOccupation,
+          perdoorno: addressData.refAdFlat1,
+          perstreetname: addressData.refAdArea1,
           peraddress: addressData.refAdAdd1,
           perpincode: addressData.refAdPincode1,
           perstate: addressData.refAdState1,
           percity: addressData.refAdCity1,
+          tempdoorno: addressData.addresstype
+            ? addressData.refAdFlat1
+            : addressData.refAdFlat2,
+          tempstreetname: addressData.addresstype
+            ? addressData.refAdArea1
+            : addressData.refAdArea2,
           tempaddress: addressData.addresstype
             ? addressData.refAdAdd1
             : addressData.refAdAdd2,
@@ -494,7 +508,7 @@ const Landingprofile = () => {
             : addressData.refAdCity2,
           email: communication.refCtEmail,
           phoneno: communication.refCtMobile,
-          emgContaxt:communication.refEmerContact,
+          emgContaxt: communication.refEmerContact,
           whatsappno: communication.refCtWhatsapp,
           mode: communication.refUcPreference,
           height: generalHealth ? generalHealth.refHeight : null,
@@ -568,7 +582,7 @@ const Landingprofile = () => {
       {
         presentHealth: {
           refBackpain: inputs.backpainscale,
-          refBackPainValue:inputs.BackPainValue,
+          refBackPainValue: inputs.BackPainValue,
           refDrName: inputs.caredoctorname,
           refHospital: inputs.caredoctorhospital,
           refMedicalDetails: inputs.pastmedicaldetails,
@@ -612,6 +626,8 @@ const Landingprofile = () => {
 
   const handleInput = (e) => {
     const { name, value } = e.target;
+    console.log("value", value);
+    console.log("name", name);
 
     let updatedInputs = {
       ...inputs,
@@ -622,6 +638,8 @@ const Landingprofile = () => {
     if (updatedInputs.addressboth) {
       updatedInputs = {
         ...updatedInputs,
+        tempdoorno: updatedInputs.perdoorno,
+        tempstreetname: updatedInputs.perstreetname,
         tempaddess: updatedInputs.peraddress,
         tempstate: updatedInputs.perstate,
         tempincode: updatedInputs.perpincode,
@@ -730,21 +748,19 @@ const Landingprofile = () => {
       }
     }
 
-    console.log('updatedInputs', updatedInputs)
+    console.log("updatedInputs", updatedInputs);
     setInputs(updatedInputs);
 
-    console.log('inputs ------------- line 727', inputs)
+    console.log("inputs ------------- line 727", inputs);
   };
-  const handlecommunicationtype = ()=>{
-   
-  
+  const handlecommunicationtype = () => {
     Axios.post(
       import.meta.env.VITE_API_URL + "user/updateProfile",
       {
         communication: {
           refCtEmail: inputs.email,
           refCtMobile: inputs.phoneno,
-          refEmerContact:inputs.emgContaxt,
+          refEmerContact: inputs.emgContaxt,
           refCtWhatsapp: inputs.whatsappno,
           refUcPreference: inputs.mode,
         },
@@ -762,14 +778,14 @@ const Landingprofile = () => {
           res.data[0],
           import.meta.env.VITE_ENCRYPTION_KEY
         );
-  
+
         if (data.token === false) {
           navigate("/expired");
         } else {
           localStorage.setItem("JWTtoken", `Bearer ${data.token}`);
-  
+
           console.log(data.success);
-  
+
           if (data.success) {
             setEdits({
               ...edits,
@@ -783,26 +799,35 @@ const Landingprofile = () => {
         console.error("Error: ", err);
       });
   };
-    const [selectedOption, setSelectedOption] = useState({
-      accident: "",
-      breaks: "",
-      care: "",
-      backpain: "",
-    });
-  
+  const [selectedOption, setSelectedOption] = useState({
+    accident: "",
+    breaks: "",
+    care: "",
+    backpain: "",
+  });
+
   const handlesubmitaddress = () => {
+    console.log(
+      "Address values - line 810",
+      inputs.perdoorno,
+      inputs.perstreetname
+    );
     Axios.post(
       import.meta.env.VITE_API_URL + "user/updateProfile",
       {
         address: {
           addresstype: options.address,
+          refAdFlat1: inputs.perdoorno ? inputs.perdoorno : "",
+          refAdArea1: inputs.perstreetname,
           refAdAdd1: inputs.peraddress,
-          refAdArea1: "",
+       
           refAdCity1: inputs.percity,
           refAdState1: inputs.perstate,
           refAdPincode1: parseInt(inputs.perpincode),
           refAdAdd2: inputs.tempaddress,
-          refAdArea2: "",
+        
+          refAdFlat2: inputs.tempdoorno ? inputs.tempdoorno : "",
+          refAdArea2: inputs.tempstreetname  ,
           refAdCity2: inputs.tempcity,
           refAdState2: inputs.tempstate,
           refAdPincode2: parseInt(inputs.temppincode),
@@ -906,7 +931,7 @@ const Landingprofile = () => {
       {
         presentHealth: {
           refBackpain: inputs.backpainscale,
-          refBackPainValue:inputs.BackPainValue,
+          refBackPainValue: inputs.BackPainValue,
           refDrName: inputs.caredoctorname,
           refHospital: inputs.caredoctorhospital,
           refMedicalDetails: inputs.pastmedicaldetails,
@@ -1536,49 +1561,48 @@ const Landingprofile = () => {
                     </div>
 
                     <div className="w-[100%] flex flex-col md:flex-row gap-y-[20px] justify-between mb-[20px]">
-                    <div className="w-[100%] md:w-[48%] lg:w-[48%]">
-                    <TextInput
-                      id="kidsCount"
-                      name="kidsCount"
-                      label="No of Kid's *"
-                      type="number"
-                      required
-                      readonly
-                      disabled={
-                        (inputs.maritalstatus === "married" ? false : true) ||
-                        (inputs.gender === "female" ? false : true)
-                      }
-                      value={inputs.kidsCount}
-                      onChange={(e) => handleInput(e)}
-                    />
-                      
+                      <div className="w-[100%] md:w-[48%] lg:w-[48%]">
+                        <TextInput
+                          id="kidsCount"
+                          name="kidsCount"
+                          label="No of Kid's *"
+                          type="number"
+                          required
+                          readonly
+                          disabled={
+                            (inputs.maritalstatus === "married"
+                              ? false
+                              : true) ||
+                            (inputs.gender === "female" ? false : true)
+                          }
+                          value={inputs.kidsCount}
+                          onChange={(e) => handleInput(e)}
+                        />
                       </div>
                       <div className="w-[48%]">
-                    <SelectInput
-                      id="deliveryType"
-                      name="deliveryType"
-                      placeholder="22"
-                      label="Delivery Type *"
-                    
-                      options={[
-                        { value: "Normal", label: "Normal" },
-                        { value: "C-Section", label: "C-Section" },
-                      ]}
-                   
-                      required
-                      disabled={
-                        (inputs.maritalstatus === "married" ? false : true) ||
-                        (inputs.gender === "female" ? false : true)||
-                        (inputs.kidsCount >0 ? false : true ) ||
-                        (!edits.personal )
-                      }
-                      value={inputs.deliveryType}
-                      
-                      onChange={(e) => handleInput(e) }
-                    />
-                  </div>
+                        <SelectInput
+                          id="deliveryType"
+                          name="deliveryType"
+                          placeholder="22"
+                          label="Delivery Type *"
+                          options={[
+                            { value: "Normal", label: "Normal" },
+                            { value: "C-Section", label: "C-Section" },
+                          ]}
+                          required
+                          disabled={
+                            (inputs.maritalstatus === "married"
+                              ? false
+                              : true) ||
+                            (inputs.gender === "female" ? false : true) ||
+                            (inputs.kidsCount > 0 ? false : true) ||
+                            !edits.personal
+                          }
+                          value={inputs.deliveryType}
+                          onChange={(e) => handleInput(e)}
+                        />
                       </div>
-                    
+                    </div>
 
                     <div className="w-[100%] flex flex-row justify-between ">
                       <div
@@ -1601,15 +1625,15 @@ const Landingprofile = () => {
                           required
                         />
                       </div>
-                      
-                      
 
-                      <div className={
+                      <div
+                        className={
                           localStorage.getItem("refUtId") === "5" ||
                           localStorage.getItem("refUtId") === "6"
                             ? "w-[48%]"
                             : "w-[48%]"
-                        }>
+                        }
+                      >
                         <div className="w-[100%]">
                           <TextInput
                             label="Occupation *"
@@ -1623,8 +1647,7 @@ const Landingprofile = () => {
                             required
                           />
                         </div>
-                        </div>
-                     
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1632,55 +1655,53 @@ const Landingprofile = () => {
             </div>
           </form>
 
-                      {/* Communication Type */}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handlecommunicationtype();
-              }}
-            >
-              <div className="basicProfileCont m-[10px] lg:m-[30px] p-[20px] lg:p-[40px] shadow-lg">
-                <div className="w-[100%] flex justify-between items-center mb-5">
-                  <div className="text-[1rem] lg:text-[25px] font-bold">
-                    Communication Type
-                  </div>
-                  {edits.communitcation ? (
-                    <button
-                      className="text-[15px] outline-none py-2 border-none px-3 bg-[#f95005] font-bold cursor-pointer text-white rounded"
-                      type="submit"
-                    >
-                      Save&nbsp;&nbsp;
-                      <i className="text-[15px] pi pi-check"></i>
-                    </button>
-                  ) : (
-                    <div
-                      onClick={() => {
-                        editform("communitcation");
-                      }}
-                      className="text-[15px] py-2 px-3 bg-[#f95005] font-bold cursor-pointer text-[#fff] rounded"
-                    >
-                      Edit&nbsp;&nbsp;
-                      <i className="text-[15px] pi pi-pen-to-square"></i>
-                    </div>
-                  )}
+          {/* Communication Type */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handlecommunicationtype();
+            }}
+          >
+            <div className="basicProfileCont m-[10px] lg:m-[30px] p-[20px] lg:p-[40px] shadow-lg">
+              <div className="w-[100%] flex justify-between items-center mb-5">
+                <div className="text-[1rem] lg:text-[25px] font-bold">
+                  Communication Type
                 </div>
-                <div className="w-[100%] flex flex-col justify-center items-center">
-                  <div className="w-[100%] flex justify-between mb-[20px]">
-                    <div className="w-[48%]">
-                      <TextInput
-                        label="E-Mail *"
-                        name="email"
-                        id="email"
-                        type="email"
-                        onChange={handleInputVal}
-                        value={inputs.email}
-                        readonly={!edits.communitcation}
-                        required
-                      />
-                    </div>
-                    <div className="w-[48%]">
-    
-
+                {edits.communitcation ? (
+                  <button
+                    className="text-[15px] outline-none py-2 border-none px-3 bg-[#f95005] font-bold cursor-pointer text-white rounded"
+                    type="submit"
+                  >
+                    Save&nbsp;&nbsp;
+                    <i className="text-[15px] pi pi-check"></i>
+                  </button>
+                ) : (
+                  <div
+                    onClick={() => {
+                      editform("communitcation");
+                    }}
+                    className="text-[15px] py-2 px-3 bg-[#f95005] font-bold cursor-pointer text-[#fff] rounded"
+                  >
+                    Edit&nbsp;&nbsp;
+                    <i className="text-[15px] pi pi-pen-to-square"></i>
+                  </div>
+                )}
+              </div>
+              <div className="w-[100%] flex flex-col justify-center items-center">
+                <div className="w-[100%] flex justify-between mb-[20px]">
+                  <div className="w-[48%]">
+                    <TextInput
+                      label="E-Mail *"
+                      name="email"
+                      id="email"
+                      type="email"
+                      onChange={handleInputVal}
+                      value={inputs.email}
+                      readonly={!edits.communitcation}
+                      required
+                    />
+                  </div>
+                  <div className="w-[48%]">
                     <TextInput
                       id="emergencyno"
                       type="number"
@@ -1693,52 +1714,52 @@ const Landingprofile = () => {
                       onChange={(e) => handleInput(e)}
                     />
                   </div>
+                </div>
+                <div className="w-[100%] flex flex-col lg:flex-row gap-y-[20px] justify-between mb-[20px]">
+                  <div className="w-[100%] lg:w-[40%]">
+                    <TextInput
+                      label="Phone Number *"
+                      name="phoneno"
+                      id="phoneno"
+                      type="number"
+                      onChange={handleInputVal}
+                      value={inputs.phoneno}
+                      readonly={!edits.communitcation}
+                      required
+                    />
                   </div>
-                  <div className="w-[100%] flex flex-col lg:flex-row gap-y-[20px] justify-between mb-[20px]">
-                    <div className="w-[100%] lg:w-[40%]">
+                  <div className="w-[100%] lg:w-[56%] flex justify-between">
+                    <div className="w-[65%] lg:w-[75%]">
                       <TextInput
-                        label="Phone Number *"
-                        name="phoneno"
-                        id="phoneno"
+                        label="WhatsApp Number *"
+                        name="whatsappno"
+                        id="whatsappno"
                         type="number"
                         onChange={handleInputVal}
-                        value={inputs.phoneno}
+                        value={inputs.whatsappno}
                         readonly={!edits.communitcation}
                         required
                       />
                     </div>
-                    <div className="w-[100%] lg:w-[56%] flex justify-between">
-                      <div className="w-[65%] lg:w-[75%]">
-                        <TextInput
-                          label="WhatsApp Number *"
-                          name="whatsappno"
-                          id="whatsappno"
-                          type="number"
-                          onChange={handleInputVal}
-                          value={inputs.whatsappno}
-                          readonly={!edits.communitcation}
-                          required
-                        />
-                      </div>
-                      <div
-                        className="w-[30%] lg:w-[18%] text-[0.7rem] lg:text-[14px] flex justify-center items-center text-center bg-[#f95005] font-bold cursor-pointer text-[#fff] rounded"
-                        onClick={() => {
-                          if (edits.communitcation) {
-                            setInputs({
-                              ...inputs,
-                              whatsappno: inputs.phoneno,
-                            });
-                          } else {
-                            console.log("Edit Disabled");
-                          }
-                        }}
-                      >
-                        Use Same Number
-                      </div>
+                    <div
+                      className="w-[30%] lg:w-[18%] text-[0.7rem] lg:text-[14px] flex justify-center items-center text-center bg-[#f95005] font-bold cursor-pointer text-[#fff] rounded"
+                      onClick={() => {
+                        if (edits.communitcation) {
+                          setInputs({
+                            ...inputs,
+                            whatsappno: inputs.phoneno,
+                          });
+                        } else {
+                          console.log("Edit Disabled");
+                        }
+                      }}
+                    >
+                      Use Same Number
                     </div>
                   </div>
+                </div>
 
-                  {/* <div className="w-[100%] ">
+                {/* <div className="w-[100%] ">
                     <SelectInput
                       id="modeofcontact"
                       name="mode"
@@ -1759,9 +1780,9 @@ const Landingprofile = () => {
                       required
                     />
                   </div> */}
-                </div>
               </div>
-            </form>
+            </div>
+          </form>
 
           {/* Address */}
           <form
@@ -1799,6 +1820,38 @@ const Landingprofile = () => {
                 <div className="w-[100%] justify-center items-center flex flex-col">
                   <div className="text-[1.2rem] lg:text-[25px] font-bold mb-5">
                     Permanent Address
+                  </div>
+                  <div
+                    className="w-[100%] mb-[20px] flex justify-between"
+                    align="start"
+                  >
+                    <div className="w-[48%]">
+                      <div className="relative w-full">
+                        <TextInput
+                          id="perdoorno"
+                          type="text"
+                          name="perdoorno"
+                          label="Door no *"
+                          required
+                          value={inputs.perdoorno}
+                          onChange={(e) => handleInput(e)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="w-[48%]">
+                      <div className="relative w-full">
+                        <TextInput
+                          id="streetname"
+                          type="text"
+                          name="perstreetname"
+                          label="Street Name *"
+                          required
+                          value={inputs.perstreetname}
+                          onChange={(e) => handleInput(e)}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="w-[100%] flex flex-col lg:flex-row gap-y-[20px] justify-between mb-[20px]">
                     <div className="w-[100%] lg:w-[48%]">
@@ -1868,6 +1921,8 @@ const Landingprofile = () => {
                         if (!options.address) {
                           setInputs({
                             ...inputs,
+                            tempdoorno: inputs.perdoorno,
+                            tempstreetname: inputs.perstreetname,
                             tempaddress: inputs.peraddress,
                             temppincode: inputs.perpincode,
                             tempstate: inputs.perstate,
@@ -1889,6 +1944,38 @@ const Landingprofile = () => {
 
                   <div className="text-[1.2rem] lg:text-[25px] font-bold mb-5">
                     Communication Address
+                  </div>
+                  <div
+                    className="w-[100%] mb-[20px] flex justify-between"
+                    align="start"
+                  >
+                    <div className="w-[48%]">
+                      <div className="relative w-full">
+                        <TextInput
+                          id="doorno"
+                          type="text"
+                          name="tempdoorno"
+                          label="Door no *"
+                          required
+                          value={inputs.tempdoorno}
+                          onChange={(e) => handleInput(e)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="w-[48%]">
+                      <div className="relative w-full">
+                        <TextInput
+                          id="streetname"
+                          type="text"
+                          name="tempstreetname"
+                          label="Street Name *"
+                          required
+                          value={inputs.tempstreetname}
+                          onChange={(e) => handleInput(e)}
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="w-[100%] flex flex-col lg:flex-row gap-y-[20px] justify-between mb-[20px]">
                     <div className="w-[100%] lg:w-[48%]">
@@ -2263,7 +2350,7 @@ const Landingprofile = () => {
                   <div className="w-[100%] flex flex-col lg:flex-row gap-y-[20px] justify-between mb-[20px]">
                     <div className="w-[100%] lg:w-[48%]">
                       <TextInput
-                        label="Others"
+                        label="Description"
                         name="pastother"
                         id="others"
                         type="text"
@@ -2356,7 +2443,7 @@ const Landingprofile = () => {
                       </div>
                     </div>
                     <div className="w-[100%] lg:w-[48%]">
-                    <label className="w-[100%] text-[#f95005] font-bold text-[1rem] lg:text-[20px] text-start">
+                      <label className="w-[100%] text-[#f95005] font-bold text-[1rem] lg:text-[20px] text-start">
                         Back Pain *
                       </label>
                       <div className="w-[100%] flex justify-start mt-[10px]">
@@ -2414,23 +2501,19 @@ const Landingprofile = () => {
                           />
                         </div>
                         <div div className="w-[48%]">
-                      <TextInput
-                        id="BackPainValue"
-                        name="BackPainValue"
-                        label="Additional Content (Back Pain)"
-                        disabled={!options.backpain || !edits.present}
-                        required
-                        value={inputs.BackPainValue}
-                        onChange={(e) => handleInput(e)}
-                      />
-                    </div>
+                          <TextInput
+                            id="BackPainValue"
+                            name="BackPainValue"
+                            label="Additional Content (Back Pain)"
+                            disabled={!options.backpain || !edits.present}
+                            required
+                            value={inputs.BackPainValue}
+                            onChange={(e) => handleInput(e)}
+                          />
+                        </div>
                       </div>
-                      </div>
-                     
-                      
                     </div>
-                  
-                  
+                  </div>
                 </div>
               </div>
             </div>

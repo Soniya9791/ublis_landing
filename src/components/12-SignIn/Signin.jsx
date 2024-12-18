@@ -191,7 +191,7 @@ export default function SignIn() {
               <TextInput
                 id="userid"
                 name="username"
-                label="Email"
+                label="Username/Email"
                 placeholder="Enter your username"
                 value={inputs.username}
                 onChange={(e) => {

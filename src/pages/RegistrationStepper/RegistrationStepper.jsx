@@ -63,7 +63,11 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     tempstate: "",
     tempcity: "",
     tempincode: "",
+    tempdoorno: "",
+    tempstreetname: "",
     peraddress: "",
+    perdoorno: "",
+    perstreetname: "",
     perstate: "",
     percity: "",
     perpincode: "",
@@ -452,6 +456,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
 
   const handleInput = (e) => {
     const { name, value } = e.target;
+    console.log("value", value);
+    console.log("name", name);
 
     let updatedInputs = {
       ...inputs,
@@ -462,6 +468,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     if (updatedInputs.addressboth) {
       updatedInputs = {
         ...updatedInputs,
+        tempdoorno: updatedInputs.perdoorno,
+        tempstreetname: updatedInputs.perstreetname,
         tempaddess: updatedInputs.peraddress,
         tempstate: updatedInputs.perstate,
         tempincode: updatedInputs.perpincode,
@@ -602,11 +610,15 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
       {
         address: {
           addresstype: inputs.addressboth,
+          regAdFlat1: inputs.perdoorno,
+          refAdArea1: inputs.perstreetname,
           refAdAdd1: inputs.peraddress,
           refAdArea1: "",
           refAdCity1: inputs.percity,
           refAdState1: State.getStateByCode(inputs.perstate).name,
           refAdPincode1: parseInt(inputs.perpincode),
+          refAdFlat2: inputs.tempdoorno,
+          refAdAred2: inputs.tempstreetname,
           refAdAdd2: inputs.tempaddess,
           refAdArea2: "",
           refAdCity2: inputs.tempcity,
@@ -1148,6 +1160,38 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                     <label className="text-[#45474b] mb-[20px] text-[18px] font-semibold">
                       Permanent Address
                     </label>
+                    <div
+                      className="w-[100%] mb-[20px] flex justify-between"
+                      align="start"
+                    >
+                      <div className="w-[48%]">
+                        <div className="relative w-full">
+                          <TextInput
+                            id="doorno"
+                            type="text"
+                            name="perdoorno"
+                            label="Door no *"
+                            required
+                            value={inputs.perdoorno}
+                            onChange={(e) => handleInput(e)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="w-[48%]">
+                        <div className="relative w-full">
+                          <TextInput
+                            id="streetname"
+                            type="text"
+                            name="perstreetname"
+                            label="Street Name *"
+                            required
+                            value={inputs.perstreetname}
+                            onChange={(e) => handleInput(e)}
+                          />
+                        </div>
+                      </div>
+                    </div>
                     <div className="mb-[20px]">
                       <TextInput
                         id="tempaddress"
@@ -1209,6 +1253,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                               if (updatedInputs.addressboth) {
                                 updatedInputs = {
                                   ...updatedInputs,
+                                  tempdoorno: updatedInputs.perdoorno,
+                                  tempstreetname: updatedInputs.perstreetname,
                                   tempaddess: updatedInputs.peraddress,
                                   tempstate: updatedInputs.perstate,
                                   tempincode: updatedInputs.perpincode,
@@ -1264,6 +1310,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                         if (addessschecked) {
                           setInputs({
                             ...inputs,
+                            tempdoorno: "",
+                            tempstreetname: "",
                             tempaddess: "",
                             tempstate: "",
                             tempincode: "",
@@ -1275,6 +1323,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                           setAddressChecked(true);
                           setInputs({
                             ...inputs,
+                            tempdoorno: inputs.perdoorno,
+                            tempstreetname: inputs.perstreetname,
                             tempaddess: inputs.peraddress,
                             tempstate: inputs.perstate,
                             tempincode: inputs.perpincode,
@@ -1290,6 +1340,38 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                     <label className="text-[#45474b] mb-[20px] text-[18px] font-semibold">
                       Communication Address
                     </label>
+                    <div
+                      className="w-[100%] mb-[20px] flex justify-between"
+                      align="start"
+                    >
+                      <div className="w-[48%]">
+                        <div className="relative w-full">
+                          <TextInput
+                            id="doorno"
+                            type="text"
+                            name="tempdoorno"
+                            label="Door no *"
+                            required
+                            value={inputs.tempdoorno}
+                            onChange={(e) => handleInput(e)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="w-[48%]">
+                        <div className="relative w-full">
+                          <TextInput
+                            id="streetname"
+                            type="text"
+                            name="tempstreetname"
+                            label="Street Name *"
+                            required
+                            value={inputs.tempstreetname}
+                            onChange={(e) => handleInput(e)}
+                          />
+                        </div>
+                      </div>
+                    </div>
                     <div className="w-[100%] mb-[20px]">
                       <TextInput
                         id="tempaddress"
@@ -1499,7 +1581,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                   />
                 </div>
 
-                <div className="w-[90%]" align="start">
+                {/* <div className="w-[90%]" align="start">
                   <div>
                     <TextLabel
                       label={"Recent injuries / Accidents / Operations *"}
@@ -1549,12 +1631,14 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       }
                     />
                   </div>
-                </div>
+                </div> */}
 
                 <div className="w-[90%]" align="start">
                   <div>
                     <TextLabel
-                      label={"Recent breaks / Fractures / Sprains *"}
+                      label={
+                        "Recent Injuries / Accidents / Surgeries / Fractures / Sprains *"
+                      }
                     />
                   </div>
                   <div className="flex w-[90%] gap-x-10 mt-2 mb-[20px]">
@@ -1593,10 +1677,11 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       type="text"
                       name="breaks"
                       placeholder="your name"
-                      label="Details"
+                      label="Description"
                       disabled={selectedOption.breaks === "yes" ? false : true}
                       value={inputs.breaks}
                       onChange={(e) => handleInput(e)}
+                      maxLength={500} // Sets the character limit to 100
                     />
                   </div>
                 </div>
@@ -1612,6 +1697,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       disabled={selectedOption.breaks === "yes" ? false : true}
                       value={inputs.activities}
                       onChange={(e) => handleInput(e)}
+                      maxLength={500}
                     />
                   </div>
                 </div>
@@ -1623,7 +1709,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       type="text"
                       name="anthingelse"
                       placeholder="your name"
-                      label="Anything else"
+                      label="Add your Comments"
                       value={inputs.anthingelse}
                       onChange={(e) => handleInput(e)}
                     />
@@ -1767,7 +1853,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                     type="text"
                     name="others"
                     placeholder="your name"
-                    label="Others"
+                    label="Description "
                     value={inputs.others}
                     onChange={(e) => handleInput(e)}
                   />
@@ -2054,7 +2140,9 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                     </button>
                   </div>
                 ))}
+                <div>  <p className="text-[#ff5001] p-5 mt-10">Note * If you need to upload a medical document, please upload it now. Otherwise, click the delete icon to remove it and proceed to the next step.</p></div>
               </div>
+              
               <hr />
               <div className="w-[90%] lg:w-[95%] h-[10vh] flex justify-between items-center">
                 {loading ? (
