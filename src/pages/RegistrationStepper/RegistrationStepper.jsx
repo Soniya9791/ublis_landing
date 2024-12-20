@@ -610,17 +610,17 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
       {
         address: {
           addresstype: inputs.addressboth,
-          regAdFlat1: inputs.perdoorno,
+          refAdFlat1: inputs.perdoorno,
           refAdArea1: inputs.perstreetname,
           refAdAdd1: inputs.peraddress,
-          refAdArea1: "",
+        
           refAdCity1: inputs.percity,
           refAdState1: State.getStateByCode(inputs.perstate).name,
           refAdPincode1: parseInt(inputs.perpincode),
           refAdFlat2: inputs.tempdoorno,
           refAdAred2: inputs.tempstreetname,
           refAdAdd2: inputs.tempaddess,
-          refAdArea2: "",
+        
           refAdCity2: inputs.tempcity,
           refAdState2: State.getStateByCode(inputs.tempstate).name,
           refAdPincode2: parseInt(inputs.tempincode),
@@ -1196,7 +1196,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       <TextInput
                         id="tempaddress"
                         name="peraddress"
-                        label="Residential  Address *"
+                        label="Locality *"
                         placeholder="Write your message"
                         rows={3}
                         required
@@ -1376,7 +1376,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       <TextInput
                         id="tempaddress"
                         name="tempaddess"
-                        label="Residential  Address *"
+                        label="Locality *"
                         placeholder="Write your message"
                         rows={3}
                         required
@@ -1709,7 +1709,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       type="text"
                       name="anthingelse"
                       placeholder="your name"
-                      label="Add your Comments"
+                      label="Anything else"
                       value={inputs.anthingelse}
                       onChange={(e) => handleInput(e)}
                     />
@@ -2242,7 +2242,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                   <TextInput
                     id="anythingelsetherapy"
                     name="therapyanything"
-                    label="Anything else"
+                    label="Add your Comments"
                     type="text"
                     value={inputs.therapyanything}
                     onChange={(e) => handleInput(e)}

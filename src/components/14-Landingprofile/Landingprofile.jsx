@@ -1834,6 +1834,7 @@ const Landingprofile = () => {
                           label="Door no *"
                           required
                           value={inputs.perdoorno}
+                          readonly={!edits.address}
                           onChange={(e) => handleInput(e)}
                         />
                       </div>
@@ -1848,6 +1849,7 @@ const Landingprofile = () => {
                           label="Street Name *"
                           required
                           value={inputs.perstreetname}
+                          readonly={!edits.address}
                           onChange={(e) => handleInput(e)}
                         />
                       </div>
@@ -1856,7 +1858,7 @@ const Landingprofile = () => {
                   <div className="w-[100%] flex flex-col lg:flex-row gap-y-[20px] justify-between mb-[20px]">
                     <div className="w-[100%] lg:w-[48%]">
                       <TextInput
-                        label="Residential  Address *"
+                        label="Locality *"
                         name="peraddress"
                         id="peraddress"
                         type="text"
@@ -1931,6 +1933,8 @@ const Landingprofile = () => {
                         } else {
                           setInputs({
                             ...inputs,
+                            tempdoorno:"",
+                            tempstreetname:"",
                             tempaddress: "",
                             temppincode: "",
                             tempstate: "",
@@ -1958,6 +1962,7 @@ const Landingprofile = () => {
                           label="Door no *"
                           required
                           value={inputs.tempdoorno}
+                          readonly={!edits.address}
                           onChange={(e) => handleInput(e)}
                         />
                       </div>
@@ -1972,6 +1977,7 @@ const Landingprofile = () => {
                           label="Street Name *"
                           required
                           value={inputs.tempstreetname}
+                          readonly={!edits.address}
                           onChange={(e) => handleInput(e)}
                         />
                       </div>
@@ -1980,7 +1986,7 @@ const Landingprofile = () => {
                   <div className="w-[100%] flex flex-col lg:flex-row gap-y-[20px] justify-between mb-[20px]">
                     <div className="w-[100%] lg:w-[48%]">
                       <TextInput
-                        label="Residential Address *"
+                        label="Locality *"
                         name="tempaddress"
                         id="tempaddress"
                         type="text"
