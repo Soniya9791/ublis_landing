@@ -1725,7 +1725,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                   </div>
                 </div>
 
-                <div className="w-[90%] mb-[20px]">
+                {/* <div className="w-[90%] mb-[20px]">
                   <div className="w-full">
                     <TextInput
                       id="otheractivities"
@@ -1739,7 +1739,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       maxLength={500}
                     />
                   </div>
-                </div>
+                </div> */}
 
                 <div className="w-[90%] mb-[20px]">
                   <div className="w-full">
@@ -1748,7 +1748,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       type="text"
                       name="anthingelse"
                       placeholder="your name"
-                      label="Anything else"
+                      label="Add your Comments"
+                      disabled={selectedOption.breaks === "yes" ? false : true}
                       value={inputs.anthingelse}
                       onChange={(e) => handleInput(e)}
                     />
@@ -1832,20 +1833,23 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       }}
                     />
                   </div>
-                  <div className="w-[32%] flex-row">
+                  <div className="flex flex-col w-[32%] -mt-[13px]">
                     <label
-                      className={`bg-[#fff] z-55 ${
-                        packageSelect > 4 ? "text-[#ff621b]" : "text-[#4c4c4e]"
-                      } 
-                        `}
+                      className={`bg-[#fff] ${
+                        packageSelect > 4 ? "text-[#ff621b]" : "text-[#a4b0c2]"
+                      } -mb-[15px] z-50 w-[130px] ml-[10px]`}
                     >
-                      &nbsp; Starting Month *
+                      &nbsp;Starting Month *
                     </label>
 
                     <Calendar
-                      label="Starting Month"
-                      className={`relative w-full z-10 mt-0 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput 
-                      `}
+                      label="Starting Month *"
+                      className={`relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer 
+                        ${
+                          packageSelect > 4
+                            ? "border-[#ff621b] text-[#4c4c4e]"
+                            : "border-[#a4b0c2] text-[#a4b0c2]"
+                        } autofill:bg-white dateInput`}
                       readOnlyInput
                       dateFormat="mm/yy"
                       view="month"
@@ -1857,20 +1861,23 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       }}
                     />
                   </div>
-                  <div className="w-[32%] flex-row">
-                    <label
-                      className={`bg-[#fff]  z-55  ${
-                        packageSelect > 5 ? "text-[#ff621b]" : "text-[#4c4c4e]"
-                      }  
-                        `}
+                  <div className="flex flex-col w-[32%] -mt-[13px]">
+                  <label
+                      className={`bg-[#fff] ${
+                        packageSelect > 5 ? "text-[#ff621b]" : "text-[#a4b0c2]"
+                      } -mb-[15px] z-50 w-[130px] ml-[10px]`}
                     >
                       &nbsp; Ending Month *
                     </label>
 
                     <Calendar
                       label="Ending Month"
-                      className={`relative w-full z-10 mt-0 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput 
-                      `}
+                      className={`relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer 
+                        ${
+                          packageSelect > 5
+                            ? "border-[#ff621b] text-[#4c4c4e]"
+                            : "border-[#a4b0c2] text-[#a4b0c2]"
+                        } autofill:bg-white dateInput`}
                       readOnlyInput
                       dateFormat="mm/yy"
                       view="month"
