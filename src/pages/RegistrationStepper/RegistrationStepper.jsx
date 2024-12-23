@@ -95,6 +95,8 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     past: "",
     family: "",
     therapyanything: "",
+    monthStart: "",
+    monthEnd: "",
   });
 
   const decrypt = (encryptedData, iv, key) => {
@@ -132,6 +134,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [selectedState, setSelectedState] = useState("");
+  const [packageSelect, setPackageSelect] = useState(0);
 
   const [uploadDocuments, setUploadDocuments] = useState([
     {
@@ -343,15 +346,14 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     })
   );
 
-  // const preferTimingOption = Object.entries(preferTiming).map(
-  //   ([value, label]) => ({
-  //     value, // Key (e.g., '1')
-  //     label, // Value (e.g., 'Chennai')
-  //   })
-  // );
+  const preferTimingOption = Object.entries(preferTiming).map(
+    ([value, label]) => ({
+      value, // Key (e.g., '1')
+      label, // Value (e.g., 'Chennai')
+    })
+  );
 
-  console.log(preferTiming);
-
+  console.log("sessiontype", sessiontype);
   const sessionTypeOption = Object.entries(sessiontype).map(
     ([value, label]) => ({
       value, // Key (e.g., '1')
@@ -513,12 +515,13 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
           // Catching any 400 status or general errors
           console.error("Error: ", err);
         });
-    } else if (name === "memberlist") {
+    } else if (name === "classtype") {
       Axios.post(
         import.meta.env.VITE_API_URL + "profile/sectionTime",
         {
-          sectionId: parseInt(value),
+          sectionId: parseInt(inputs.memberlist),
           branch: parseInt(inputs.branch),
+          classType: parseInt(value),
         },
         {
           headers: {
@@ -537,8 +540,38 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
             navigate("/expired");
           }
           console.log("Member List -----------", data);
-          setpreferTiming(data.SectionTime);
-          setSessionType(data.CustTime);
+          // setpreferTiming(data.SectionTime);
+          setSessionType(data.SectionTime);
+        })
+        .catch((err) => {
+          // Catching any 400 status or general errors
+          console.error("Error: ", err);
+        });
+    } else if (name === "sessiontype") {
+      Axios.post(
+        import.meta.env.VITE_API_URL + "profile/PackageTime",
+        {
+          packageId: parseInt(value),
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("JWTtoken"),
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((res) => {
+          const data = decrypt(
+            res.data[1],
+            res.data[0],
+            import.meta.env.VITE_ENCRYPTION_KEY
+          );
+          if (data.token == false) {
+            navigate("/expired");
+          }
+          console.log("Timing List -----------", data);
+          setpreferTiming(data.packageTiming);
+          // setSessionType(data.SectionTime);
         })
         .catch((err) => {
           // Catching any 400 status or general errors
@@ -613,14 +646,14 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
           refAdFlat1: inputs.perdoorno,
           refAdArea1: inputs.perstreetname,
           refAdAdd1: inputs.peraddress,
-        
+
           refAdCity1: inputs.percity,
           refAdState1: State.getStateByCode(inputs.perstate).name,
           refAdPincode1: parseInt(inputs.perpincode),
           refAdFlat2: inputs.tempdoorno,
           refAdAred2: inputs.tempstreetname,
           refAdAdd2: inputs.tempaddess,
-        
+
           refAdCity2: inputs.tempcity,
           refAdState2: State.getStateByCode(inputs.tempstate).name,
           refAdPincode2: parseInt(inputs.tempincode),
@@ -653,6 +686,12 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
 
           ref_su_communicationPreference: parseInt(inputs.mode),
           ref_Class_Mode: parseInt(inputs.classtype),
+          ref_su_fromMonth: inputs.monthStart
+            ? datePickerToMyFormat(inputs.monthStart)
+            : null,
+          ref_su_toMonth: inputs.monthEnd
+            ? datePickerToMyFormat(inputs.monthEnd)
+            : null,
         },
         generalhealth: {
           refHeight: inputs.height,
@@ -1725,10 +1764,12 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       options={branchOptions}
                       required
                       value={inputs.branch}
-                      onChange={(e) => handleInput(e)}
+                      onChange={(e) => {
+                        setPackageSelect(1), handleInput(e);
+                      }}
                     />
                   </div>
-                  <div className="w-[30%]">
+                  <div className="w-[18%]">
                     <SelectInput
                       id="memberlist"
                       name="memberlist"
@@ -1736,41 +1777,13 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       required
                       options={memberlistOptions}
                       value={inputs.memberlist}
-                      onChange={(e) => handleInput(e)}
-                      disabled={inputs.branch ? false : true}
+                      onChange={(e) => {
+                        setPackageSelect(2), handleInput(e);
+                      }}
+                      disabled={packageSelect > 0 ? false : true}
                     />
                   </div>
-                  <div className="w-[30%]">
-                    <SelectInput
-                      id="sessiontype"
-                      name="sessiontype"
-                      label="Session Type *"
-                      disabled={inputs.memberlist ? false : true}
-                      options={sessionTypeOption}
-                      required
-                      value={inputs.sessiontype}
-                      onChange={(e) => handleInput(e)}
-                    />
-                  </div>
-                </div>
-
-                <div className="w-[90%] flex justify-between mb-[20px]">
-                  <div className="w-[68%]">
-                    <SelectInput
-                      id="memberlist"
-                      name="preferabletiming"
-                      label="Preferable Timing *"
-                      options={Object.values(preferTiming).map((element) => ({
-                        value: element.refTimeId, // Extract refTimeId as value
-                        label: element.formattedString, // Extract formattedString as label
-                      }))}
-                      required
-                      disabled={inputs.memberlist ? false : true}
-                      value={inputs.preferabletiming}
-                      onChange={(e) => handleInput(e)}
-                    />
-                  </div>
-                  <div className="w-[30%]">
+                  <div className="w-[18%]">
                     <SelectInput
                       id="classtype"
                       name="classtype"
@@ -1781,7 +1794,92 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       ]}
                       required
                       value={inputs.classtype}
-                      onChange={(e) => handleInput(e)}
+                      disabled={packageSelect > 1 ? false : true}
+                      onChange={(e) => {
+                        setPackageSelect(3), handleInput(e);
+                      }}
+                    />
+                  </div>
+                  <div className="w-[30%]">
+                    <SelectInput
+                      id="sessiontype"
+                      name="sessiontype"
+                      label="Class Package *"
+                      placeholder="Select Package"
+                      disabled={packageSelect > 2 ? false : true}
+                      options={sessionTypeOption}
+                      required
+                      value={inputs.sessiontype}
+                      onChange={(e) => {
+                        setPackageSelect(4), handleInput(e);
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="w-[90%] flex justify-between mb-[20px]">
+                  <div className="w-[32%]">
+                    <SelectInput
+                      id="memberlist"
+                      name="preferabletiming"
+                      label="Preferable Timing *"
+                      options={preferTimingOption}
+                      required
+                      disabled={packageSelect > 3 ? false : true}
+                      value={inputs.preferabletiming}
+                      onChange={(e) => {
+                        setPackageSelect(5), handleInput(e);
+                      }}
+                    />
+                  </div>
+                  <div className="w-[32%] flex-row">
+                    <label
+                      className={`bg-[#fff] z-55 ${
+                        packageSelect > 4 ? "text-[#ff621b]" : "text-[#4c4c4e]"
+                      } 
+                        `}
+                    >
+                      &nbsp; Starting Month *
+                    </label>
+
+                    <Calendar
+                      label="Starting Month"
+                      className={`relative w-full z-10 mt-0 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput 
+                      `}
+                      readOnlyInput
+                      dateFormat="mm/yy"
+                      view="month"
+                      name="monthStart"
+                      value={inputs.monthStart}
+                      disabled={packageSelect > 4 ? false : true}
+                      onChange={(e) => {
+                        setPackageSelect(6), handleInput(e);
+                      }}
+                    />
+                  </div>
+                  <div className="w-[32%] flex-row">
+                    <label
+                      className={`bg-[#fff]  z-55  ${
+                        packageSelect > 5 ? "text-[#ff621b]" : "text-[#4c4c4e]"
+                      }  
+                        `}
+                    >
+                      &nbsp; Ending Month *
+                    </label>
+
+                    <Calendar
+                      label="Ending Month"
+                      className={`relative w-full z-10 mt-0 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput 
+                      `}
+                      readOnlyInput
+                      dateFormat="mm/yy"
+                      view="month"
+                      name="monthEnd"
+                      value={inputs.monthEnd}
+                      disabled={packageSelect > 5 ? false : true}
+                      onChange={(e) => {
+                        setPackageSelect(7), handleInput(e);
+                      }}
                     />
                   </div>
                 </div>
@@ -2140,9 +2238,16 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                     </button>
                   </div>
                 ))}
-                <div>  <p className="text-[#ff5001] p-5 mt-10">Note * If you need to upload a medical document, please upload it now. Otherwise, click the delete icon to remove it and proceed to the next step.</p></div>
+                <div>
+                  {" "}
+                  <p className="text-[#ff5001] p-5 mt-10">
+                    Note * If you need to upload a medical document, please
+                    upload it now. Otherwise, click the delete icon to remove it
+                    and proceed to the next step.
+                  </p>
+                </div>
               </div>
-              
+
               <hr />
               <div className="w-[90%] lg:w-[95%] h-[10vh] flex justify-between items-center">
                 {loading ? (
