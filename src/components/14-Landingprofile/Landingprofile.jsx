@@ -17,6 +17,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import "../14-Landingprofile/Landingprofile.css";
 import Swal from "sweetalert2";
+import { Calendar } from "primereact/calendar";
 
 import { FaEye } from "react-icons/fa";
 
@@ -76,6 +77,7 @@ const Landingprofile = () => {
           refQualification: inputs.qualification,
           refStAge: parseInt(inputs.age),
           refStDOB: new Date(inputs.dob),
+          // refStDOB: Dob,
           refStFName: inputs.fname,
           refStLName: inputs.lname,
           refStSex: inputs.gender,
@@ -210,6 +212,21 @@ const Landingprofile = () => {
       content: "",
     },
   });
+  function calculateAge(dob) {
+    const birthDate = new Date(dob);
+    const today = new Date();
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    const dayDiff = today.getDate() - birthDate.getDate();
+
+    // Adjust age if the current date is before the birth date in the current year
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
+
+    return age;
+  }
 
   const [uploadDocuments, setUploadDocuments] = useState([
     {
@@ -473,6 +490,7 @@ const Landingprofile = () => {
           fname: personalData.refStFName,
           lname: personalData.refStLName,
           dob: personalData.refStDOB,
+          // dob: Dob.refStDOB,
           age: personalData.refStAge,
           gender: personalData.refStSex,
           maritalstatus: personalData.refMaritalStatus,
@@ -820,14 +838,14 @@ const Landingprofile = () => {
           refAdFlat1: inputs.perdoorno ? inputs.perdoorno : "",
           refAdArea1: inputs.perstreetname,
           refAdAdd1: inputs.peraddress,
-       
+
           refAdCity1: inputs.percity,
           refAdState1: inputs.perstate,
           refAdPincode1: parseInt(inputs.perpincode),
           refAdAdd2: inputs.tempaddress,
-        
+
           refAdFlat2: inputs.tempdoorno ? inputs.tempdoorno : "",
-          refAdArea2: inputs.tempstreetname  ,
+          refAdArea2: inputs.tempstreetname,
           refAdCity2: inputs.tempcity,
           refAdState2: inputs.tempstate,
           refAdPincode2: parseInt(inputs.temppincode),
@@ -1469,7 +1487,26 @@ const Landingprofile = () => {
                     </div>
 
                     <div className="w-[100%] flex justify-between mb-[20px]">
-                      <div className="w-[48%]">
+                      <div className="flex flex-col w-[48%] -mt-[13px]">
+                                          <label className="bg-[#fff] text-[#ff621b] -mb-[15px] z-50 w-[120px] ml-[10px]">
+                                            &nbsp;Date of Birth *
+                                          </label>
+                      
+                                          <Calendar
+  label="Date of Birth *"
+  name="dob"
+  id="dob"
+  type="date"
+  className="relative w-full mt-1 h-10 px-3 placeholder-transparent transition-all border-2 rounded outline-none peer border-[#b3b4b6] text-[#4c4c4e] autofill:bg-white dateInput"
+  onChange={(e) => handleInput({ target: { name: 'dob', value: e.value } })}
+  value={inputs.dob ? new Date(inputs.dob) : null} // Ensure it's a Date object
+  readOnly={!edits.personal} // Make it readonly if edits.personal is false
+  required
+/>
+                                        </div>
+                      
+
+                      {/* <div className="w-[48%]">
                         <TextInput
                           label="Date of Birth *"
                           name="dob"
@@ -1480,7 +1517,23 @@ const Landingprofile = () => {
                           readonly={!edits.personal}
                           required
                         />
-                      </div>
+                      </div> */}
+                      {/* <div className="w-[48%]">
+      <label htmlFor="dob" className="block text-gray-700 text-sm font-bold mb-2">
+        Date of Birth *
+      </label>
+      <Calendar
+        id="dob"
+        value={inputs.dob ? new Date(inputs.dob) : null} // Parse string to Date if needed
+        onChange={(e) => handleInputVal({ target: { name: 'dob', value: e.value } })}
+        disabled={!edits.personal}
+        showIcon
+        dateFormat="dd/mm/yy"
+        className="w-full"
+        placeholder="Select your date of birth"
+        required
+      />
+    </div> */}
                       <div className="w-[48%]">
                         <TextInput
                           label="Age *"
@@ -1933,8 +1986,8 @@ const Landingprofile = () => {
                         } else {
                           setInputs({
                             ...inputs,
-                            tempdoorno:"",
-                            tempstreetname:"",
+                            tempdoorno: "",
+                            tempstreetname: "",
                             tempaddress: "",
                             temppincode: "",
                             tempstate: "",
@@ -2363,6 +2416,7 @@ const Landingprofile = () => {
                         onChange={handleInputVal}
                         value={inputs.pastother}
                         readonly={!edits.present}
+                        maxLength={500}
                       />
                     </div>
                     <div className="w-[100%] lg:w-[48%]">

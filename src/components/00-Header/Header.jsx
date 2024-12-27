@@ -55,6 +55,7 @@ export default function Header() {
     { title: "Class", href: "/class" },
     { title: "Gallery", href: "/gallery" },
     { title: "Contact", href: "/contact" },
+    // { title: "Register", href: "/register" },
     { title: "Sign In", href: "/signin" },
     { title: "Sign Up", href: "/signup" },
   ];

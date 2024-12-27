@@ -332,6 +332,89 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
 
   const [sessiontype, setSessionType] = useState([]);
 
+  const [counts, setCounts] = useState({
+    weekends: 0,
+    weekdays: 0,
+  });
+
+  const datePicker = (date) => {
+    if (!date) return null; // Return null for invalid input
+    const parsedDate = new Date(date); // Convert to Date object
+    if (isNaN(parsedDate)) {
+      console.error('Invalid date input:', date);
+      return null;
+    }
+    const month = (parsedDate.getMonth() + 1).toString().padStart(2, '0');
+    const year = parsedDate.getFullYear();
+    return `${month}/${year}`;
+  };
+  
+
+  const calculateWeekendsAndWeekdays = (e) => {
+    // Format the inputs
+    const monthStart = datePicker(inputs.monthStart);
+    const monthEnd = datePicker(e.value);
+  
+    console.log('Formatted monthStart:', monthStart);
+    console.log('Formatted monthEnd:', monthEnd);
+  
+    // Check for empty values
+    if (!monthStart || !monthEnd) {
+      console.error('Invalid input: monthStart or monthEnd is missing.');
+      return;
+    }
+  
+    // Parse the month and year
+    const [startMonth, startYear] = monthStart.split("/").map(Number);
+    const [endMonth, endYear] = monthEnd.split("/").map(Number);
+  
+    console.log('Parsed startMonth:', startMonth, 'startYear:', startYear);
+    console.log('Parsed endMonth:', endMonth, 'endYear:', endYear);
+  
+    // Ensure parsed values are valid numbers
+    if (!startMonth || !startYear || !endMonth || !endYear) {
+      console.error('Invalid parsing: startMonth, startYear, endMonth, or endYear is invalid.');
+      return;
+    }
+  
+    // Create date objects
+    const startDate = new Date(startYear, startMonth - 1, 1);
+    const endDate = new Date(endYear, endMonth, 0);
+  
+    console.log('startDate:', startDate);
+    console.log('endDate:', endDate);
+  
+    // Check if startDate is after endDate
+    if (startDate > endDate) {
+      console.error('Start date cannot be after end date.');
+      return;
+    }
+  
+    let weekends = 0;
+    let weekdays = 0;
+  
+    // Loop through all dates
+    for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+      const day = date.getDay(); // Get day of the week
+      console.log('Current date:', date, 'Day:', day);
+      if (day === 0 || day === 6) {
+        weekends++;
+      } else {
+        weekdays++;
+      }
+    }
+  
+    console.log('weekends:', weekends);
+    console.log('weekdays:', weekdays);
+  
+    // Update state
+    setCounts({ weekends, weekdays });
+    console.log('Updated counts:', { weekends, weekdays });
+  };
+  
+  
+
+
   // const [personalHealthProblem, setPersonalHealthProblem] = useState([]);
 
   const branchOptions = Object.entries(branchList).map(([value, label]) => ({
@@ -614,6 +697,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
     setInputs(updatedInputs);
   };
 
+  
   function calculateBMI(weight, height) {
     // Convert height from cm to meters
     let heightInMeters = height / 100;
@@ -1885,11 +1969,19 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       value={inputs.monthEnd}
                       disabled={packageSelect > 5 ? false : true}
                       onChange={(e) => {
-                        setPackageSelect(7), handleInput(e);
+                        setPackageSelect(7), handleInput(e),calculateWeekendsAndWeekdays(e)
+                        ;
                       }}
                     />
                   </div>
+                  
+              
+
                 </div>
+                <div className="mt-4 text-[#ff621b] flex flex-row justify-center gap-5">
+                      <p>The Weekend count is  {counts.weekends}.</p> 
+                      <p>The Weekday's count is  {counts.weekdays}.</p>
+                    </div>
               </div>
               <hr />
               <div className="w-[90%] lg:w-[95%] h-[10vh] flex justify-between items-center">
@@ -2380,7 +2472,7 @@ const RegistrationStepper = ({ closeregistration, handlecloseregister }) => {
                       </li>
                       <li style={{ listStyle: "disc" }}>
                         If I feel any discomfort or strain during a session, I
-                        will gently exit the posture and take rest as needed.
+                        will gently exit the posture and  rest as needed.
                       </li>
                       <li style={{ listStyle: "disc" }}>
                         I accept that neither the instructor nor the hosting
